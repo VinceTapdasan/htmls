@@ -1,0 +1,2511 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Service Vault — Jewelry Service POC Mock UI</title>
+  <style>
+    :root {
+      --paper: #fafafa;
+      --white: #ffffff;
+      --black: #000000;
+      --gray: #90908b;
+      --navy: #1d3b5a;
+      --silver: #b9bcc3;
+      --border: rgba(185,188,195,.62);
+      --border-soft: rgba(185,188,195,.35);
+      --shadow: 0 1px 2px rgba(0,0,0,.04);
+      --shadow-lg: 0 20px 50px rgba(0,0,0,.18);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      background: var(--paper);
+      color: var(--black);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button, input, select, textarea { font: inherit; font-size: 12px; }
+    button { cursor: pointer; }
+
+    .app { min-height: 100vh; background: var(--paper); }
+
+    /* Mobile-first shell */
+    .sidebar {
+      position: static;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 2px;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 17px;
+    }
+
+    .brand-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      letter-spacing: .02em;
+    }
+
+    .brand-subtitle {
+      margin-top: 2px;
+      color: var(--gray);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .nav {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding: 12px 16px;
+      scroll-snap-type: x proximity;
+    }
+
+    .nav-group {
+      min-width: 205px;
+      scroll-snap-align: start;
+    }
+
+    .nav-label {
+      margin: 0 0 7px;
+      padding: 0 2px;
+      color: var(--gray);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .nav-item {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      gap: 10px;
+      border: 0;
+      border-radius: 2px;
+      background: transparent;
+      color: var(--gray);
+      padding: 9px 10px;
+      text-align: left;
+      font-size: 13px;
+      transition: background 140ms ease, color 140ms ease;
+    }
+
+    .nav-item:hover { background: var(--paper); color: var(--black); }
+    .nav-item.active { background: var(--navy); color: var(--white); }
+
+    .nav-icon {
+      width: 17px;
+      flex: 0 0 17px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .main { min-height: 100vh; margin-left: 0; }
+
+    .content { padding: 16px; }
+
+    @media (max-width: 759px) {
+      .brand { padding: 12px 14px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .brand-title { font-size: 16px; }
+      .brand-subtitle { font-size: 9px; letter-spacing: .16em; }
+      .nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        overflow: visible;
+        padding: 12px 14px;
+      }
+      .nav-group { min-width: 0; }
+      .nav-item { padding: 8px; font-size: 12px; }
+      .content { padding: 14px; }
+      .dashboard-head { gap: 12px; }
+      .dashboard-filters,
+      .dashboard-actions,
+      .filter-tabs,
+      .filter-bar { gap: 8px; }
+      .dashboard-actions .btn {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 0;
+      }
+      .dashboard-filters .filter-control,
+      .filter-bar .field-control,
+      .filter-bar input.field-control,
+      .filter-bar input.date-field {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 0;
+        max-width: none;
+      }
+      .filter-bar .btn { flex: 1 1 100%; }
+      .filter-tab { font-size: 11px; padding: 6px 7px; }
+      .metric-large { font-size: 20px; }
+      .section-head,
+      .new-service-header {
+        align-items: flex-start;
+      }
+      .case-summary .section-head,
+      .detail-section .section-head {
+        display: grid;
+      }
+      .case-summary .compact-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .compact-actions .btn { min-height: 32px; font-size: 12px; }
+      .btn { padding: 0 10px; }
+      .summary-grid { gap: 0; }
+      .summary-item { padding: 9px 0; }
+      .table-actions { flex-wrap: wrap; }
+      table { min-width: 780px; }
+      .calendar-grid { overflow-x: auto; }
+      .calendar-day-name,
+      .calendar-cell { min-width: 96px; }
+      .calendar-cell { min-height: 96px; padding: 8px; }
+    }
+
+    .page { animation: fadeUp 160ms ease-out; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header {
+      display: block;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      margin-bottom: 5px;
+      color: var(--gray);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--black);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 23px;
+      font-weight: 500;
+      letter-spacing: -.02em;
+    }
+
+    .page-desc {
+      max-width: 580px;
+      margin: 6px 0 0;
+      color: var(--gray);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .page-header-action { margin-top: 14px; }
+
+    .btn {
+      display: inline-flex;
+      min-height: 36px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid rgba(185,188,195,.75);
+      border-radius: 2px;
+      background: var(--white);
+      color: var(--black);
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 550;
+      text-decoration: none;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn:hover { border-color: var(--navy); }
+    .btn-primary { border-color: var(--navy); background: var(--navy); color: var(--white); }
+    .btn-primary:hover { border-color: var(--black); background: var(--black); }
+    .btn-ghost { border-color: transparent; background: transparent; color: var(--gray); }
+    .btn-sm { min-height: 28px; padding: 0 8px; font-size: 11px; }
+
+    .grid { display: grid; gap: 14px; }
+    .grid-6, .grid-4, .grid-3, .grid-2, .grid-12, .workflow-grid, .receipt-grid, .detail-grid, .photo-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .mt-5 { margin-top: 20px; }
+    .mt-6 { margin-top: 24px; }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .card.dark {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .card-body, .metric-body { padding: 14px; }
+
+    .metric-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .icon-box {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(185,188,195,.42);
+      border-radius: 2px;
+      background: var(--paper);
+      font-size: 15px;
+    }
+
+    .dark .icon-box {
+      border-color: transparent;
+      background: rgba(255,255,255,.1);
+    }
+
+    .muted { color: var(--gray); }
+    .dark .muted { color: var(--silver); }
+
+    .metric-label { font-size: 12px; opacity: .75; }
+    .metric-value { margin-top: 4px; font-size: 24px; font-weight: 650; letter-spacing: -.03em; }
+    .metric-sub { margin-top: 6px; font-size: 11px; opacity: .72; }
+
+    .section-title {
+      margin: 0;
+      color: var(--black);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 19px;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      margin: 3px 0 0;
+      color: var(--gray);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .workflow-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .workflow-card {
+      border: 1px solid;
+      border-radius: 2px;
+      padding: 12px;
+    }
+
+    .workflow-card .count {
+      margin-top: 16px;
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .workflow-card .label { font-size: 12px; }
+
+    .bg-pending { background: #fffbeb; border-color: #fde68a; color: #b45309; }
+    .bg-workshop { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+    .bg-ready { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
+    .bg-overdue { background: #fff1f2; border-color: #fecdd3; color: #be123c; }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .list-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid rgba(185,188,195,.5);
+      border-radius: 2px;
+      background: var(--white);
+      padding: 12px 14px;
+    }
+
+    .list-title {
+      color: var(--black);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .list-sub {
+      margin-top: 2px;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .quick-actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .quick-action {
+      display: flex;
+      width: 100%;
+      align-items: flex-start;
+      gap: 12px;
+      border: 1px solid rgba(185,188,195,.5);
+      border-radius: 2px;
+      background: var(--paper);
+      padding: 12px;
+      text-align: left;
+      transition: border-color 140ms ease, background 140ms ease;
+    }
+
+    .quick-action:hover { border-color: var(--navy); background: var(--white); }
+
+    .quick-action-icon {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 2px;
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .quick-title { display: block; font-size: 14px; font-weight: 700; }
+    .quick-desc { display: block; margin-top: 2px; color: var(--gray); font-size: 12px; line-height: 1.55; }
+
+    .route-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray);
+      font-size: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .new-service-shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .new-service-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border: 0;
+      background: transparent;
+      color: var(--black);
+      padding: 0;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .back-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      color: var(--gray);
+    }
+
+    .intake-layout {
+      display: grid;
+      gap: 18px;
+    }
+
+    .intake-main,
+    .intake-side {
+      display: grid;
+      align-content: start;
+      gap: 18px;
+    }
+
+    .intake-card {
+      border: 1px solid rgba(185,188,195,.62);
+      border-radius: 2px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .intake-card-body { padding: 18px; }
+
+    .intake-card-title {
+      margin: 0;
+      color: var(--black);
+      font-size: 16px;
+      font-weight: 750;
+    }
+
+    .intake-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .intake-row .field-label { flex: 1 1 220px; }
+
+    .icon-button {
+      display: grid;
+      min-width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 1px solid var(--navy);
+      border-radius: 2px;
+      background: var(--navy);
+      color: var(--white);
+      padding: 0 12px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .photo-requirement {
+      margin-top: 10px;
+      color: #b45309;
+      font-size: 12px;
+    }
+
+    .service-line {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+      border-top: 1px solid var(--border-soft);
+      padding-top: 18px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .service-pill {
+      border: 1px solid rgba(185,188,195,.75);
+      border-radius: 2px;
+      background: var(--white);
+      color: var(--black);
+      padding: 7px 10px;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .service-pill.active {
+      border-color: var(--navy);
+      background: #f8fafc;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .summary-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border-soft);
+      margin-top: 12px;
+      padding-top: 12px;
+      color: var(--black);
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .payment-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--gray);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .payment-row strong {
+      color: var(--black);
+      font-weight: 750;
+    }
+
+    .paid-text { color: #047857; }
+
+    .balance-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: #fef3c7;
+      color: #b45309;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .segmented {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .segment {
+      border: 0;
+      border-radius: 2px;
+      background: transparent;
+      color: var(--gray);
+      padding: 7px 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .segment.active {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .full-width-btn {
+      width: 100%;
+      margin-top: 14px;
+    }
+
+    .dashboard-head {
+      display: grid;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .dashboard-filters,
+    .dashboard-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .dashboard-filters .filter-control { min-width: 118px; }
+
+    .filter-control {
+      min-height: 34px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      color: var(--gray);
+      padding: 0 10px;
+      font-size: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .metric-large {
+      margin-top: 10px;
+      color: var(--black);
+      font-size: 22px;
+      font-weight: 650;
+      letter-spacing: -.02em;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .metric-note {
+      margin-top: 6px;
+      color: var(--gray);
+      font-size: 11px;
+    }
+
+    .channel-grid {
+      display: grid;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .channel-cell {
+      border-bottom: 1px solid var(--border-soft);
+      padding: 14px;
+    }
+
+    .channel-cell:last-child { border-bottom: 0; }
+
+    .amount-green { color: #047857; }
+    .amount-red { color: #dc2626; }
+
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .filter-tab {
+      border: 1px solid transparent;
+      border-radius: 2px;
+      background: transparent;
+      color: var(--gray);
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .filter-tab.active {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .filter-bar .field-control {
+      width: auto;
+      min-width: 150px;
+      min-height: 32px;
+      margin-top: 0;
+    }
+
+    .filter-bar input.field-control { max-width: 240px; }
+    .filter-bar input.date-field { max-width: 130px; }
+    .filter-bar input::placeholder { color: var(--gray); font-size: 11px; }
+    .filter-bar .muted { font-size: 11px; }
+    .dashboard-actions .btn { font-size: 12px; }
+
+    .calendar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 28px 0 16px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+    }
+
+    .calendar-day-name {
+      border-bottom: 1px solid var(--border);
+      padding: 10px;
+      color: var(--gray);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .14em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .calendar-cell {
+      min-height: 112px;
+      border-right: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+      padding: 12px;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .calendar-cell:nth-child(7n) { border-right: 0; }
+    .calendar-date.active { display:inline-grid; width:28px; height:28px; place-items:center; border-radius:50%; background: var(--black); color: var(--white); }
+
+    .pickup-pill {
+      display: inline-flex;
+      margin-top: 12px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .calendar-cell.has-pickups { cursor: pointer; }
+    .calendar-cell.has-pickups:hover { background: #f8fafc; }
+
+    .day-cases {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,.32);
+      padding: 20px;
+    }
+
+    .day-cases.show { display: flex; }
+
+    .day-cases-card {
+      width: min(100%, 520px);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      box-shadow: var(--shadow-lg);
+      padding: 20px;
+    }
+
+    .flow-rail {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .flow-step {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 10px;
+      border: 1px solid rgba(185,188,195,.5);
+      border-radius: 2px;
+      background: var(--white);
+      padding: 12px;
+    }
+
+    .flow-step.done { border-color: rgba(29,59,90,.45); background: #f8fafc; }
+    .flow-step.current { border-color: var(--navy); box-shadow: inset 3px 0 0 var(--navy); }
+
+    .step-index {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .flow-title { color: var(--black); font-size: 13px; font-weight: 700; }
+    .flow-desc { margin-top: 3px; color: var(--gray); font-size: 12px; line-height: 1.5; }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .tab {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      color: var(--gray);
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .tab.active {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .field-control {
+      width: 100%;
+      min-height: 36px;
+      margin-top: 4px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      color: var(--black);
+      padding: 7px 9px;
+      outline: none;
+      font-size: 12px;
+    }
+
+    .field-control::placeholder { color: var(--gray); font-size: 11px; }
+
+    textarea.field-control { min-height: 72px; resize: vertical; }
+
+    .generated-box {
+      display: flex;
+      min-height: 36px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 4px;
+      border: 1px solid rgba(29,59,90,.36);
+      border-radius: 2px;
+      background: #f8fafc;
+      padding: 7px 9px;
+      color: var(--black);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .upload-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .upload-tile,
+    .attachment-tile {
+      display: grid;
+      min-height: 86px;
+      place-items: center;
+      border: 1px dashed rgba(29,59,90,.42);
+      border-radius: 2px;
+      background: var(--paper);
+      color: var(--gray);
+      padding: 10px;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .attachment-tile {
+      border-style: solid;
+      background: var(--white);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .timeline-dot {
+      width: 10px;
+      height: 10px;
+      margin: 4px auto 0;
+      border-radius: 50%;
+      background: var(--silver);
+      box-shadow: 0 0 0 4px rgba(185,188,195,.25);
+    }
+
+    .timeline-item.done .timeline-dot { background: var(--navy); box-shadow: 0 0 0 4px rgba(29,59,90,.12); }
+    .timeline-title { color: var(--black); font-size: 13px; font-weight: 700; }
+    .timeline-meta { margin-top: 2px; color: var(--gray); font-size: 11px; line-height: 1.5; }
+
+    .chat-thread {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .message-bubble {
+      max-width: 92%;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--paper);
+      padding: 10px;
+      color: var(--black);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .message-bubble.customer {
+      justify-self: end;
+      border-color: rgba(29,59,90,.28);
+      background: #f8fafc;
+    }
+
+    .approval-panel {
+      display: grid;
+      gap: 10px;
+      border: 1px solid rgba(29,59,90,.32);
+      border-radius: 2px;
+      background: #f8fafc;
+      padding: 12px;
+    }
+
+    .receipt-strip {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .receipt-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid rgba(185,188,195,.5);
+      border-radius: 2px;
+      background: var(--white);
+      padding: 8px 10px;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 2px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    thead {
+      border-bottom: 1px solid var(--border);
+      background: var(--paper);
+      color: var(--gray);
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    tbody tr { border-bottom: 1px solid var(--border-soft); }
+    tbody tr.clickable-row { cursor: pointer; }
+    tbody tr.clickable-row:hover { background: #f8fafc; }
+    tbody tr:last-child { border-bottom: 0; }
+
+    td.primary { color: var(--black); font-weight: 650; }
+    td.secondary { color: var(--gray); }
+    .truncate { max-width: 220px; overflow: hidden; text-overflow: ellipsis; color: var(--gray); }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid;
+      border-radius: 2px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .status-pending { background: #fffbeb; color: #b45309; border-color: #fde68a; }
+    .status-progress, .status-workshop { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .status-ready, .status-completed, .status-approved { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+    .status-overdue, .status-declined, .status-high { background: #fff1f2; color: #be123c; border-color: #fecdd3; }
+    .status-sent, .status-normal { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
+    .status-draft, .status-low { background: #f5f5f5; color: #525252; border-color: #d4d4d4; }
+
+    .table-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Dialogs / modals only. No drawers. */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      overflow-y: auto;
+      background: rgba(0,0,0,.28);
+      padding: 14px;
+    }
+
+    .modal-backdrop.show { display: flex; }
+
+    .modal {
+      display: flex;
+      flex-direction: column;
+      width: min(100%, 760px);
+      max-height: calc(100vh - 28px);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      box-shadow: var(--shadow-lg);
+      animation: modalIn 160ms ease-out;
+    }
+
+    .modal.modal-wide { width: min(100%, 1120px); }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(10px) scale(.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .modal-header {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--white);
+      padding: 16px;
+    }
+
+    .modal-title {
+      margin: 0;
+      color: var(--black);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .modal-body {
+      display: grid;
+      gap: 16px;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .modal-footer {
+      flex: 0 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      border-top: 1px solid var(--border);
+      background: var(--white);
+      padding: 14px 16px;
+    }
+
+    .modal-footer .btn { flex: 1 1 auto; }
+
+    .form-section-title {
+      margin: 0 0 12px;
+      color: var(--black);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .field-label {
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .field-box {
+      height: 36px;
+      margin-top: 4px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--paper);
+    }
+
+    .detail-grid {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .detail-grid > .case-layout { grid-column: 1 / -1; }
+
+    .case-layout {
+      display: grid;
+      gap: 14px;
+    }
+
+    .case-main,
+    .case-side {
+      display: grid;
+      align-content: start;
+      gap: 14px;
+    }
+
+    .case-summary {
+      display: grid;
+      gap: 12px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      padding: 14px;
+    }
+
+    .summary-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .summary-item {
+      border-top: 1px solid var(--border-soft);
+      padding-top: 8px;
+    }
+
+    .summary-k { color: var(--gray); font-size: 11px; }
+    .summary-v { margin-top: 2px; color: var(--black); font-size: 13px; font-weight: 700; line-height: 1.4; }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .compact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .detail-section {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      padding: 14px;
+    }
+
+    .detail-section-title {
+      color: var(--black);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .faint-title {
+      margin-bottom: 14px;
+      color: var(--gray);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .customer-detail-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .detail-divider {
+      border-top: 1px solid var(--border-soft);
+      margin: 4px 0;
+    }
+
+    .note-row {
+      display: grid;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .detail-text {
+      margin-top: 8px;
+      color: var(--gray);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .portal-card { max-width: 980px; margin: 0 auto; }
+
+    .portal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid rgba(185,188,195,.5);
+      padding-bottom: 18px;
+    }
+
+    .portal-title {
+      margin: 0;
+      color: var(--black);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 23px;
+      font-weight: 500;
+    }
+
+    .portal-action-band {
+      display: grid;
+      gap: 12px;
+      border: 1px solid rgba(29,59,90,.3);
+      border-radius: 2px;
+      background: #f8fafc;
+      padding: 14px;
+      margin-top: 16px;
+    }
+
+    .portal-layout {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .portal-main,
+    .portal-side {
+      display: grid;
+      align-content: start;
+      gap: 14px;
+    }
+
+    .portal-progress {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .progress-segment {
+      min-height: 6px;
+      border-radius: 2px;
+      background: rgba(185,188,195,.35);
+    }
+
+    .progress-segment.done { background: var(--navy); }
+
+    .info-box {
+      border: 1px solid rgba(185,188,195,.5);
+      border-radius: 2px;
+      background: var(--paper);
+      padding: 14px;
+    }
+
+    .info-label { color: var(--gray); font-size: 12px; }
+    .info-value { margin-top: 4px; color: var(--black); font-size: 14px; font-weight: 700; }
+
+    .photo-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .photo-placeholder {
+      display: grid;
+      height: 112px;
+      place-items: center;
+      border: 1px solid rgba(185,188,195,.5);
+      border-radius: 2px;
+      background: var(--white);
+      color: var(--gray);
+    }
+
+    .photo-placeholder.filled {
+      align-content: end;
+      justify-items: start;
+      background:
+        linear-gradient(135deg, rgba(29,59,90,.08), rgba(185,188,195,.2)),
+        repeating-linear-gradient(45deg, rgba(255,255,255,.72) 0 6px, rgba(250,250,250,.72) 6px 12px);
+      color: var(--black);
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .receipt-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .receipt-line {
+      border-bottom: 1px solid var(--border-soft);
+      padding: 8px 0;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    @media (min-width: 760px) {
+      .content { padding: 24px; }
+      .page-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .page-header-action { margin-top: 0; }
+      .grid-2, .workflow-grid, .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-4, .receipt-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .channel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .channel-cell { border-right: 1px solid var(--border-soft); }
+      .channel-cell:nth-child(2n) { border-right: 0; }
+      .detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .customer-detail-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .customer-detail-grid .full-row { grid-column: 1 / -1; }
+      .note-row { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr) auto; }
+      .calendar-cell { min-height: 132px; }
+      .modal-footer .btn { flex: 0 0 auto; }
+    }
+
+    @media (min-width: 1180px) {
+      .sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: 288px;
+        height: 100vh;
+        overflow-y: auto;
+        border-right: 1px solid var(--border);
+        border-bottom: 0;
+      }
+
+      .brand { padding: 16px 24px; }
+
+      .nav {
+        display: block;
+        overflow: visible;
+        padding: 20px 16px;
+      }
+
+      .nav-group {
+        min-width: 0;
+        margin-bottom: 20px;
+      }
+
+      .main {
+        margin-left: 288px;
+      }
+
+      .content { padding: 32px; }
+
+      .grid-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .grid-4, .receipt-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .grid-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+      .channel-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .channel-cell { border-bottom: 0; }
+      .channel-cell:nth-child(2n) { border-right: 1px solid var(--border-soft); }
+      .channel-cell:last-child { border-right: 0; }
+      .intake-layout { grid-template-columns: minmax(0, 1.45fr) minmax(340px, .7fr); align-items: start; }
+      .span-8 { grid-column: span 8 / span 8; }
+      .span-4 { grid-column: span 4 / span 4; }
+      .workflow-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+      .card-body { padding: 20px; }
+      .metric-body { padding: 16px; }
+      .modal-backdrop { align-items: flex-start; padding: 32px; }
+      .modal { max-height: calc(100vh - 64px); }
+      .modal-body { padding: 20px; gap: 20px; }
+      .modal-header { padding: 20px; }
+      .modal-footer { padding: 16px 20px; }
+      .detail-grid { padding: 20px; }
+      .case-layout { grid-template-columns: minmax(0, 1.55fr) minmax(320px, .85fr); }
+      .portal-layout { grid-template-columns: minmax(0, 1.35fr) minmax(320px, .75fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">⚒</div>
+        <div>
+          <div class="brand-title">Service Vault</div>
+          <div class="brand-subtitle">Jewelry Service POC</div>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav"></nav>
+    </aside>
+
+    <main class="main">
+      <div class="content" id="content"></div>
+    </main>
+  </div>
+
+  <script>
+    const navGroups = [
+      { label: "Overview", items: [{ id: "dashboard", label: "Dashboard", icon: "▣" }] },
+      { label: "Service Operations", items: [
+        { id: "service", label: "Service Cases", icon: "⚒" },
+        { id: "workshop", label: "Workshop", icon: "◇" },
+        { id: "approvals", label: "Approvals", icon: "✓" },
+        { id: "pickups", label: "Pickup Calendar", icon: "◷" },
+      ]},
+      { label: "Engagement", items: [
+        { id: "customers", label: "Customers", icon: "◎" },
+        { id: "messages", label: "Messages", icon: "✉" },
+        { id: "portal", label: "Customer Portal Preview", icon: "▤" },
+      ]},
+      { label: "Documents", items: [{ id: "receipts", label: "Receipts", icon: "□" }] },
+      { label: "Insights", items: [{ id: "reports", label: "Reports", icon: "▥" }] },
+      { label: "Admin", items: [
+        { id: "products", label: "Products", icon: "▧" },
+        { id: "services-list", label: "Services", icon: "⚒" },
+        { id: "settings", label: "Settings", icon: "⚙" },
+      ] },
+    ];
+
+    const serviceCases = [
+      { id: "SRV-01942", customer: "Amelia Grant", contact: "+47 412 88 109 / amelia@email.com", item: "Vintage Cartier Ring", description: "Stone tightening and claw inspection", status: "In progress", due: "May 22, 2026", estimate: "$1,200", updated: "12 min ago", priority: "High", assigned: "Jonas" },
+      { id: "SRV-01941", customer: "Marcus Lee", contact: "+47 944 18 230 / marcus@email.com", item: "Rolex Datejust", description: "Polish, pressure test, inspection", status: "Pending Approval", due: "May 24, 2026", estimate: "$450", updated: "1 hr ago", priority: "Normal", assigned: "Mikael" },
+      { id: "SRV-01938", customer: "Sofia Reyes", contact: "+47 970 42 558 / sofia@email.com", item: "Diamond Pendant", description: "Chain replacement and clasp check", status: "Ready for Pickup", due: "Ready", estimate: "$320", updated: "Today", priority: "Low", assigned: "Nora" },
+      { id: "SRV-01931", customer: "Daniel Kim", contact: "+47 901 77 412 / daniel@email.com", item: "Emerald Bracelet", description: "Clasp repair and safety chain", status: "Overdue", due: "May 16, 2026", estimate: "$780", updated: "Yesterday", priority: "High", assigned: "Jonas" },
+      { id: "SRV-01927", customer: "Lina Berg", contact: "+47 482 11 880 / lina@email.com", item: "Pearl Necklace", description: "Restringing and clasp replacement", status: "Completed", due: "Completed", estimate: "$260", updated: "2 days ago", priority: "Normal", assigned: "Nora" },
+      { id: "SRV-01920", customer: "Erik Holm", contact: "+47 455 66 018 / erik@email.com", item: "Omega Seamaster", description: "Service received, photos captured, estimate pending", status: "Service Received", due: "May 28, 2026", estimate: "TBD", updated: "3 days ago", priority: "Normal", assigned: "Unassigned" },
+    ];
+
+    const activity = [
+      ["SRV-01942", "Workshop added before photos", "12 min ago"],
+      ["SRV-01941", "Approval request sent by SMS", "1 hr ago"],
+      ["SRV-01938", "Marked ready for pickup", "Today"],
+      ["SRV-01931", "Overdue reminder created", "Yesterday"],
+    ];
+
+    const customers = [
+      { name: "Amelia Grant", phone: "+47 412 88 109", email: "amelia@email.com", active: 2, last: "Today", type: "Private Client" },
+      { name: "Sofia Reyes", phone: "+47 970 42 558", email: "sofia@email.com", active: 1, last: "May 18", type: "Collector" },
+      { name: "Marcus Lee", phone: "+47 944 18 230", email: "marcus@email.com", active: 1, last: "Today", type: "Standard" },
+      { name: "Daniel Kim", phone: "+47 901 77 412", email: "daniel@email.com", active: 1, last: "May 16", type: "Standard" },
+    ];
+
+    const lifecycleSteps = [
+      ["Create or find customer", "Lookup Amelia Grant, confirm phone/email, then link the service record to her profile.", "done"],
+      ["Generate service ID", "SRV-01942 is created automatically and appears on receipts, workshop views, messages, and portal links.", "done"],
+      ["Capture item and photos", "Vintage Cartier Ring details plus before, hallmark, and stone-setting photos are attached.", "done"],
+      ["Add workshop instructions", "Stone tightening, claw inspection, warranty note, due date, and price estimate are recorded.", "done"],
+      ["Generate receipt", "Store, customer, workshop, and internal copies are prepared with a QR/status link.", "done"],
+      ["Send SMS/email status link", "Customer receives a portal link with status, estimate, photos, and approval controls.", "done"],
+      ["Customer portal review", "Customer checks the repair details, asks a question, and approves the estimate.", "current"],
+      ["Staff status updates", "Service moves from Service received to Pending approval, In progress, Ready for pickup, then Completed.", "pending"],
+      ["Automated notifications", "Status changes trigger SMS/email messages and pickup reminders.", "pending"],
+      ["Activity log", "Each status, communication, approval, and receipt event is recorded on the service case.", "pending"],
+    ];
+
+    const statusLifecycle = [
+      ["Service received", "May 20, 09:14", "Store staff", "done"],
+      ["Pending approval", "May 20, 09:32", "Approval SMS sent", "done"],
+      ["In progress", "May 20, 11:06", "Workshop accepted", "done"],
+      ["Ready for pickup", "Next", "Auto-notify customer", "pending"],
+      ["Completed", "Final", "Pickup and receipt closeout", "pending"],
+    ];
+
+    const caseEvents = [
+      ["Status", "Service received", "May 20, 09:14", "Generated SRV-01942 after customer lookup."],
+      ["Photo", "Before photos attached", "May 20, 09:18", "3 customer-visible photos linked to item and service ID."],
+      ["Receipt", "Digital receipt prepared", "May 20, 09:21", "Store, customer, workshop, and internal copies available."],
+      ["SMS", "Status link sent", "May 20, 09:32", "Customer opened portal from SMS."],
+      ["Approval", "Estimate approved", "May 20, 10:04", "Customer approved $1,200 stone tightening estimate."],
+      ["Status", "Moved to In progress", "May 20, 11:06", "Workshop accepted job and added internal note."],
+    ];
+
+    const photoAttachments = [
+      ["Before photo", "ring-before-01942.jpg", "Customer-visible"],
+      ["Stone setting", "claw-detail-01942.jpg", "Workshop + customer"],
+      ["Hallmark", "hallmark-01942.jpg", "Internal"],
+      ["After photo slot", "Pending upload", "Workshop"],
+    ];
+
+    const portalThread = [
+      ["staff", "Hi Amelia, we inspected the ring. The claws need tightening before polishing. Estimate is $1,200."],
+      ["customer", "Please proceed. Can you also keep the original finish as much as possible?"],
+      ["staff", "Yes. Workshop note updated. We will send a pickup message once the ring passes final inspection."],
+    ];
+
+    const notificationEvents = [
+      ["SMS", "Status link sent", "Sent", "May 20, 09:32"],
+      ["Email", "Digital service receipt delivered", "Sent", "May 20, 09:33"],
+      ["Portal", "Estimate approved by customer", "Approved", "May 20, 10:04"],
+      ["SMS", "Ready for pickup reminder", "Draft", "Triggers when status changes"],
+    ];
+
+    const pickupCaseMap = {
+      "18": [[4, "1 item", "Completed", "Paid"]],
+      "19": [[1, "1 item", "Pending", "$450 due"], [2, "1 item", "Ready", "Paid"], [3, "1 item", "Overdue", "$780 due"]],
+      "20": [[0, "2 items", "In progress", "$1,000 due"], [1, "1 item", "Pending", "$450 due"], [2, "1 item", "Ready", "Paid"]],
+      "21": [[2, "1 item", "Ready", "Paid"], [4, "1 item", "Completed", "Paid"]],
+      "22": [[0, "1 item", "In progress", "$1,000 due"]],
+      "23": [[3, "1 item", "Overdue", "$780 due"]],
+      "24": [[4, "1 item", "Completed", "Paid"]],
+      "26": [[0, "1 item", "In progress", "$1,000 due"], [2, "1 item", "Ready", "Paid"]],
+      "27": [[1, "1 item", "Pending", "$450 due"]],
+      "28": [[5, "1 item", "Service received", "Estimate pending"]],
+      "29": [[0, "1 item", "In progress", "$1,000 due"], [3, "1 item", "Overdue", "$780 due"]],
+      "30": [[2, "1 item", "Ready", "Paid"]],
+    };
+
+    let active = "dashboard";
+    let activeServiceIndex = 0;
+
+    function statusClass(status) {
+      const s = status.toLowerCase();
+      if (s.includes("received")) return "status-sent";
+      if (s.includes("pending")) return "status-pending";
+      if (s.includes("workshop")) return "status-workshop";
+      if (s.includes("progress")) return "status-progress";
+      if (s.includes("ready")) return "status-ready";
+      if (s.includes("completed")) return "status-completed";
+      if (s.includes("overdue")) return "status-overdue";
+      if (s.includes("approved")) return "status-approved";
+      if (s.includes("declined")) return "status-declined";
+      if (s.includes("sent")) return "status-sent";
+      if (s.includes("draft")) return "status-draft";
+      if (s === "high") return "status-high";
+      if (s === "normal") return "status-normal";
+      if (s === "low") return "status-low";
+      return "status-draft";
+    }
+
+    function status(status) {
+      return `<span class="status ${statusClass(status)}">${status}</span>`;
+    }
+
+    function pageHeader(eyebrow, title, description, action = "") {
+      return `
+        <div class="page-header">
+          <div>
+            <div class="eyebrow">${eyebrow}</div>
+            <h1>${title}</h1>
+            <p class="page-desc">${description}</p>
+          </div>
+          ${action ? `<div class="page-header-action">${action}</div>` : ""}
+        </div>
+      `;
+    }
+
+    function metric(icon, label, value, sub, dark = false) {
+      return `
+        <div class="card ${dark ? "dark" : ""}">
+          <div class="metric-body">
+            <div class="metric-top">
+              <div class="icon-box">${icon}</div>
+              <div class="muted">⋯</div>
+            </div>
+            <div class="metric-label">${label}</div>
+            <div class="metric-value">${value}</div>
+            <div class="metric-sub">${sub}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFlowRail(steps = lifecycleSteps) {
+      return `
+        <div class="flow-rail">
+          ${steps.map(([title, desc, state], index) => `
+            <div class="flow-step ${state}">
+              <div class="step-index">${index + 1}</div>
+              <div>
+                <div class="flow-title">${title}</div>
+                <div class="flow-desc">${desc}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderStatusTimeline() {
+      return `
+        <div class="timeline">
+          ${statusLifecycle.map(([title, time, actor, state]) => `
+            <div class="timeline-item ${state === "done" ? "done" : ""}">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">${title}</div>
+                <div class="timeline-meta">${time} · ${actor}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderAttachments() {
+      return `
+        <div class="upload-grid">
+          ${photoAttachments.map(([label, file, access]) => `
+            <div class="attachment-tile">
+              <div>
+                <div class="flow-title">${label}</div>
+                <div class="flow-desc">${file}<br>${access}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderChatThread() {
+      return `
+        <div class="chat-thread">
+          ${portalThread.map(([from, text]) => `
+            <div class="message-bubble ${from === "customer" ? "customer" : ""}">
+              <div class="timeline-meta">${from === "customer" ? "Amelia Grant" : "SDE service desk"}</div>
+              ${text}
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderNav() {
+      document.getElementById("nav").innerHTML = navGroups.map(group => `
+        <div class="nav-group">
+          <div class="nav-label">${group.label}</div>
+          ${group.items.map(item => `
+            <button class="nav-item ${active === item.id || (item.id === "service" && active.startsWith("service-")) ? "active" : ""}" onclick="navigate('${item.id}')">
+              <span class="nav-icon">${item.icon}</span>
+              <span>${item.label}</span>
+            </button>
+          `).join("")}
+        </div>
+      `).join("");
+    }
+
+    function navigate(id) {
+      active = id;
+      renderNav();
+      renderPage();
+    }
+
+    function navigateNewService() {
+      active = "service-new";
+      renderNav();
+      renderPage();
+      if (window.location.hash !== "#/service/new") {
+        window.location.hash = "/service/new";
+      }
+    }
+
+    function navigateServiceDetail(index) {
+      activeServiceIndex = index;
+      active = "service-detail";
+      renderNav();
+      renderPage();
+      const row = serviceCases[index];
+      if (row && window.location.hash !== `#/service/${row.id}`) {
+        window.location.hash = `/service/${row.id}`;
+      }
+    }
+
+    function renderDashboard() {
+      return `
+        <section class="page">
+          <div class="dashboard-head">
+            <div>
+              <h1>Dashboard</h1>
+              <p class="page-desc">Monthly service and collection summary</p>
+            </div>
+            <div class="dashboard-filters">
+              <select class="filter-control"><option>Lifetime</option></select>
+              <select class="filter-control"><option>All Branches</option></select>
+              <select class="filter-control"><option>May</option></select>
+              <select class="filter-control"><option>2026</option></select>
+            </div>
+          </div>
+
+          <div class="dashboard-actions">
+            <button class="btn" onclick="navigateNewService()">＋ New Service</button>
+            <button class="btn" onclick="navigate('approvals')">✓ New Approval</button>
+            <button class="btn" onclick="navigate('receipts')">□ New Receipt</button>
+            <button class="btn" onclick="navigate('messages')">✉ Message Customer</button>
+          </div>
+
+          <div class="grid grid-3 mt-5">
+            <div class="card"><div class="metric-body"><div class="eyebrow">Service cases</div><div class="metric-large">42</div><div class="metric-note">9 pending approval</div></div></div>
+            <div class="card"><div class="metric-body"><div class="eyebrow">Estimated revenue</div><div class="metric-large">$38,420</div><div class="metric-note"><span class="amount-green">$31,200 collected</span> · $7,220 outstanding</div></div></div>
+            <div class="card"><div class="metric-body"><div class="eyebrow">Service margin</div><div class="metric-large">$12,840</div><div class="metric-note amount-red">$4,200 workshop expenses</div></div></div>
+          </div>
+
+          <div class="mt-6">
+            <p class="section-sub" style="margin-bottom:10px;">Collection channels</p>
+            <div class="channel-grid">
+              <div class="channel-cell"><div class="eyebrow">Card</div><div class="info-value">$12,450</div></div>
+              <div class="channel-cell"><div class="eyebrow">Bank Deposit</div><div class="info-value">$9,830</div></div>
+              <div class="channel-cell"><div class="eyebrow">Cash</div><div class="info-value">$8,140</div></div>
+              <div class="channel-cell"><div class="eyebrow">Invoice</div><div class="info-value">$7,220</div><div class="section-sub amount-red">outstanding</div></div>
+            </div>
+          </div>
+
+          <div class="card mt-6">
+            <div class="card-body">
+              <div class="section-head">
+                <div>
+                  <h2 class="section-title">Today's collections</h2>
+                  <p class="section-sub">Payments recorded today</p>
+                </div>
+                <div class="amount-green">$1,200</div>
+              </div>
+              <div class="list">
+                <div class="list-row"><div><div class="list-title">SRV-01942</div><div class="list-sub">Amelia Grant</div></div><div><div class="list-title amount-green">$1,000</div><div class="list-sub">Card</div></div></div>
+                <div class="list-row"><div><div class="list-title">SRV-01941</div><div class="list-sub">Marcus Lee</div></div><div><div class="list-title amount-green">$200</div><div class="list-sub">Cash</div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-2 mt-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="section-head"><h2 class="section-title">Upcoming pickups</h2><span class="muted">7 within 3 days</span></div>
+                <div class="list">
+                  <div class="list-row"><div><div class="list-title">SRV-01942</div><div class="list-sub">Amelia Grant</div></div><div>${status("In progress")}</div></div>
+                  <div class="list-row"><div><div class="list-title">SRV-01938</div><div class="list-sub">Sofia Reyes</div></div><div>${status("Ready for Pickup")}</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h2 class="section-title">Recent service transactions</h2>
+                <div class="list">
+                  <div class="list-row"><div><div class="list-title">SRV-01941</div><div class="list-sub">Marcus Lee · May 20, 2026</div></div><div><div class="list-title">$450</div>${status("Pending")}</div></div>
+                  <div class="list-row"><div><div class="list-title">SRV-01938</div><div class="list-sub">Sofia Reyes · May 19, 2026</div></div><div><div class="list-title">$320</div>${status("Ready")}</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderServiceCases() {
+      const action = `<button class="btn btn-primary" onclick="navigateNewService()">＋ New Service Case</button>`;
+      return `
+        <section class="page">
+          ${pageHeader("Service Operations", "Service cases", "Main operational queue for jewelry repair, customer approvals, workshop progress, receipt printing, and status changes.", action)}
+          <div class="filter-tabs">
+            <button class="filter-tab active">All 42</button>
+            <button class="filter-tab">Pending 9</button>
+            <button class="filter-tab">In Progress 18</button>
+            <button class="filter-tab">Ready 11</button>
+            <button class="filter-tab">Completed 64</button>
+            <button class="filter-tab">Cancelled 0</button>
+          </div>
+          <div class="filter-bar">
+            <select class="field-control"><option>All Branches</option><option>Oslo Store</option><option>Workshop</option></select>
+            <input class="field-control" placeholder="Search service ID, customer, item..." />
+            <span class="muted">From</span>
+            <input class="field-control date-field" placeholder="dd/mm/yyyy" />
+            <span class="muted">to</span>
+            <input class="field-control date-field" placeholder="dd/mm/yyyy" />
+            <button class="btn btn-primary">⌕ Search</button>
+          </div>
+          <div class="card table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Service ID</th><th>Customer</th><th>Item / Product</th><th>Service / Repair Description</th><th>Price Estimate</th><th>Status</th><th>Est. Completion</th><th>Last Updated</th><th>Quick Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${serviceCases.map((row, index) => `
+                  <tr class="clickable-row" onclick="navigateServiceDetail(${index})">
+                    <td class="primary" style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace;">${row.id}</td>
+                    <td class="primary">${row.customer}</td>
+                    <td>${row.item}</td>
+                    <td class="truncate">${row.description}</td>
+                    <td class="primary">${row.estimate}</td>
+                    <td>${status(row.status)}</td>
+                    <td>${row.due}</td>
+                    <td class="secondary">${row.updated}</td>
+                    <td>
+                      <div class="table-actions" onclick="event.stopPropagation()">
+                        <button class="btn btn-sm btn-ghost">✉</button>
+                        <button class="btn btn-sm btn-ghost">□</button>
+                      </div>
+                    </td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderNewService() {
+      return `
+        <section class="page">
+          <div class="new-service-header">
+            <button class="back-link" onclick="navigate('service')">
+              <span class="back-mark">←</span>
+              <span>Service cases</span>
+            </button>
+            <span class="route-line">/service/new</span>
+          </div>
+
+          <div class="new-service-shell">
+            <div class="intake-layout">
+              <div class="intake-main">
+                <div class="intake-card">
+                  <div class="intake-card-body">
+                    <div class="faint-title">Customer</div>
+                    <div class="intake-row">
+                      <label class="field-label">Phone or email
+                        <input class="field-control" value="+47 412 88 109" />
+                      </label>
+                      <button class="icon-button">→</button>
+                    </div>
+                    <div class="customer-detail-grid" style="margin-top:16px;">
+                      <div><div class="summary-k">Name</div><div class="summary-v">Amelia Grant</div></div>
+                      <div><div class="summary-k">Phone</div><div class="summary-v">+47 412 88 109</div></div>
+                      <div><div class="summary-k">Original pickup</div><div class="summary-v">May 22, 2026</div></div>
+                      <div><div class="summary-k">Branch</div><div class="summary-v">Oslo Store</div></div>
+                      <div class="detail-divider full-row"></div>
+                      <div class="full-row"><div class="summary-k">Address</div><div class="summary-v">Karl Johans gate 12, Oslo</div></div>
+                      <div class="detail-divider full-row"></div>
+                      <div class="note-row full-row">
+                        <label class="field-label">Reschedule pickup<input class="field-control" placeholder="dd/mm/yyyy" /></label>
+                        <button class="btn">Save</button>
+                        <label class="field-label">Note<textarea class="field-control" placeholder="Internal note..."></textarea></label>
+                        <button class="btn">Save Note</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="intake-card">
+                  <div class="intake-card-body">
+                    <div class="section-head">
+                      <div>
+                        <h2 class="intake-card-title">Item and service</h2>
+                        <p class="section-sub">Capture item identity, before photos, requested work, and workshop-facing instructions.</p>
+                      </div>
+                      <label class="field-label" style="display:flex;align-items:center;gap:8px;flex:0 0 auto;">
+                        <input type="checkbox" /> Same service to all items
+                      </label>
+                    </div>
+
+                    <div class="grid grid-2">
+                      <label class="field-label">Item name / product
+                        <input class="field-control" value="Vintage Cartier Ring" />
+                      </label>
+                      <label class="field-label">Item type
+                        <select class="field-control"><option>Ring</option><option>Watch</option><option>Necklace</option><option>Bracelet</option></select>
+                      </label>
+                    </div>
+
+                    <div class="intake-row">
+                      <div>
+                        <div class="field-label">Before photos</div>
+                        <div class="photo-requirement">At least one before photo is required before creating a service case.</div>
+                      </div>
+                      <div class="compact-actions" style="margin-left:auto;">
+                        <button class="btn btn-sm">▧ Camera</button>
+                        <button class="btn btn-sm">⇧ Upload</button>
+                      </div>
+                    </div>
+
+                    <div class="service-line">
+                      <label class="field-label">Service request
+                        <textarea class="field-control">Stone tightening and claw inspection.</textarea>
+                      </label>
+                      <label class="field-label">Workshop instructions
+                        <textarea class="field-control">Check setting under magnification. Preserve original finish. Upload after photo before pickup notification.</textarea>
+                      </label>
+                      <div>
+                        <div class="field-label">Primary service</div>
+                        <div class="pill-row">
+                          <button class="service-pill active">Claw tightening $1,200</button>
+                          <button class="service-pill">Polish $450</button>
+                          <button class="service-pill">Pressure test $320</button>
+                          <button class="service-pill">Restringing $260</button>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="field-label">Add-ons</div>
+                        <div class="pill-row">
+                          <button class="service-pill">Certificate scan</button>
+                          <button class="service-pill">Priority workshop</button>
+                          <button class="service-pill">Insurance note</button>
+                        </div>
+                      </div>
+                      <button class="btn">＋ Add Item</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="intake-side">
+                <div class="intake-card">
+                  <div class="intake-card-body side-stack">
+                    <h2 class="intake-card-title">Details</h2>
+                    <label class="field-label">Generated service ID
+                      <div class="generated-box"><span>SRV-01943</span><span>Auto-created</span></div>
+                    </label>
+                    <label class="field-label">Initial status
+                      <select class="field-control"><option>Service received</option><option>Pending approval</option></select>
+                    </label>
+                    <label class="field-label">Estimated completion
+                      <input class="field-control" value="May 22, 2026" />
+                    </label>
+                    <label class="field-label">Internal note
+                      <textarea class="field-control">Customer prefers SMS. Keep original finish where possible.</textarea>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="intake-card">
+                  <div class="intake-card-body">
+                    <h2 class="intake-card-title">Summary</h2>
+                    <div class="receipt-strip">
+                      <div class="receipt-chip"><span>Customer</span><strong>Amelia Grant</strong></div>
+                      <div class="receipt-chip"><span>Items</span><strong>1</strong></div>
+                      <div class="receipt-chip"><span>Receipt copies</span><strong>4</strong></div>
+                      <div class="receipt-chip"><span>Status link</span><strong>Ready</strong></div>
+                    </div>
+                    <div class="summary-total"><span>Total estimate</span><span>$1,200</span></div>
+                    <button class="btn btn-primary full-width-btn">Create Case + Send Link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderServiceDetail() {
+      const row = serviceCases[activeServiceIndex] || serviceCases[0];
+      return `
+        <section class="page">
+          <div class="new-service-header" style="margin-bottom:18px;">
+            <button class="back-link" onclick="navigate('service')">
+              <span class="back-mark">←</span>
+              <span>Service cases</span>
+            </button>
+            <span class="route-line">/service/${row.id}</span>
+          </div>
+
+          ${renderServiceDetailBody(row)}
+        </section>
+      `;
+    }
+
+    function renderServiceDetailBody(row) {
+      const phone = row.contact.split(" / ")[0] || row.contact;
+      return `
+        <div class="case-layout">
+          <div class="case-main">
+            <div class="case-summary">
+              <div class="faint-title">Customer</div>
+              <div class="customer-detail-grid">
+                <div><div class="summary-k">Name</div><div class="summary-v">${row.customer}</div></div>
+                <div><div class="summary-k">Phone</div><div class="summary-v">${phone}</div></div>
+                <div><div class="summary-k">Original pickup</div><div class="summary-v">${row.due}</div></div>
+                <div><div class="summary-k">Branch</div><div class="summary-v">Oslo Store</div></div>
+                <div class="detail-divider full-row"></div>
+                <div class="full-row"><div class="summary-k">Address</div><div class="summary-v">Karl Johans gate 12, Oslo</div></div>
+                <div class="detail-divider full-row"></div>
+                <div class="note-row full-row">
+                  <label class="field-label">Reschedule pickup<input class="field-control" placeholder="dd/mm/yyyy" /></label>
+                  <button class="btn">Save</button>
+                  <label class="field-label">Note<textarea class="field-control" placeholder="Internal note..."></textarea></label>
+                  <button class="btn">Save Note</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="faint-title">Workshop brief</div>
+              <div class="summary-grid">
+                <div class="summary-item"><div class="summary-k">Work required</div><div class="summary-v">${row.description}</div></div>
+                <div class="summary-item"><div class="summary-k">Handling note</div><div class="summary-v">Preserve patina and original finish where possible.</div></div>
+                <div class="summary-item"><div class="summary-k">Priority</div><div class="summary-v">${row.priority}</div></div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="faint-title">Photos and item evidence</div>
+              ${renderAttachments()}
+            </div>
+          </div>
+
+          <div class="case-side">
+            <div class="detail-section">
+              <div class="eyebrow">Payment Summary</div>
+              <div class="payment-row"><span>Total</span><strong>${row.estimate === "TBD" ? "$0.00" : row.estimate}</strong></div>
+              <div class="payment-row"><a class="muted" href="#">Add promo</a><span></span></div>
+              <div class="payment-row"><span>Paid</span><strong class="paid-text">$200</strong></div>
+              <div class="summary-total"><span>Balance</span><span class="balance-pill">Partial · ${row.estimate === "TBD" ? "$0" : "$1,000"}</span></div>
+              <button class="btn btn-primary full-width-btn">＋ Add Payment</button>
+            </div>
+
+            <div class="detail-section">
+              <div class="segmented">
+                <button class="segment active">SMS</button>
+                <button class="segment">Payment</button>
+              </div>
+              <p class="section-sub">Ready-for-pickup SMS has not been sent yet.</p>
+              <button class="btn full-width-btn">Send SMS · Ready for Pickup</button>
+            </div>
+
+            <div class="detail-section">
+              <div class="eyebrow">Assigned To</div>
+              <select class="field-control">
+                <option>${row.assigned === "Unassigned" ? "Unassigned" : row.assigned}</option>
+                <option>Jonas</option>
+                <option>Nora</option>
+                <option>Mikael</option>
+              </select>
+            </div>
+
+            <div class="detail-section">
+              <div class="eyebrow">Email Customer</div>
+              <p class="section-sub">${row.contact.split(" / ")[1] || "customer@email.com"}</p>
+              <select class="field-control">
+                <option>Service Ready for Pickup</option>
+                <option>Payment Reminder</option>
+                <option>Updated Pickup Date</option>
+                <option>Estimate Approval Request</option>
+              </select>
+              <button class="btn full-width-btn">✉ Send Email</button>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+    function tablePage(eyebrow, title, description, columns, rows) {
+      return `
+        <section class="page">
+          ${pageHeader(eyebrow, title, description)}
+          <div class="card table-scroll">
+            <table>
+              <thead><tr>${columns.map(c => `<th>${c}</th>`).join("")}</tr></thead>
+              <tbody>
+                ${rows.map(row => `<tr>${row.map((cell, i) => `<td class="${i === 0 ? "primary" : "secondary"}">${cell}</td>`).join("")}</tr>`).join("")}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderWorkshop() {
+      return tablePage(
+        "Service Operations",
+        "Workshop queue",
+        "Role-specific work queue replacing the workshop copy of the paper service receipt.",
+        ["Service ID", "Item", "Work Required", "Customer", "Status", "Due Date", "Priority", "Assigned To", "Actions"],
+        serviceCases.map(x => [x.id, x.item, x.description, x.customer, status(x.status), x.due, status(x.priority), x.assigned, "Update"])
+      );
+    }
+
+    function renderPickupCalendar() {
+      const pickupCounts = { 12: "1 item", 18: "1 item", 19: "4 items", 20: "9 items", 21: "7 items", 22: "5 items", 23: "4 items", 24: "1 item", 26: "7 items", 27: "4 items", 28: "7 items", 29: "8 items", 30: "4 items" };
+      const days = Array.from({ length: 35 }, (_, i) => i < 4 ? "" : String(i - 3));
+      return `
+        <section class="page">
+          <div class="section-head">
+            <div>
+              <h1>Upcoming pickups</h1>
+              <p class="page-desc">6 service cases · 11 items total</p>
+            </div>
+            <div class="dashboard-actions">
+              <button class="filter-tab active">◷ Calendar</button>
+              <button class="filter-tab">☰ Table</button>
+            </div>
+          </div>
+          <div class="calendar-head">
+            <button class="btn btn-ghost">‹</button>
+            <h2 class="section-title">May 2026</h2>
+            <button class="btn btn-ghost">›</button>
+          </div>
+          <div class="calendar-grid">
+            ${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => `<div class="calendar-day-name">${day}</div>`).join("")}
+            ${days.map(day => `
+              <div class="calendar-cell ${pickupCounts[day] ? "has-pickups" : ""}" ${pickupCounts[day] ? `onclick="openPickupDay('${day}')"` : ""}>
+                ${day ? `<span class="calendar-date ${day === "20" ? "active" : ""}">${day}</span>` : ""}
+                ${pickupCounts[day] ? `<div class="pickup-pill">${pickupCounts[day]}</div>` : ""}
+              </div>
+            `).join("")}
+          </div>
+          <div class="day-cases" id="pickupDayOverlay" onclick="closePickupDay(event)">
+            <div class="day-cases-card" onclick="event.stopPropagation()">
+              <div id="pickupDayContent"></div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function openPickupDay(day) {
+      const cases = pickupCaseMap[day] || [];
+      document.getElementById("pickupDayContent").innerHTML = `
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">May ${day}, 2026</h2>
+            <p class="section-sub">${cases.length} mapped service cases</p>
+          </div>
+          <button class="btn btn-ghost" onclick="closePickupDay()">✕</button>
+        </div>
+        <div class="list">
+          ${cases.map(([index, itemCount, state, payment]) => {
+            const row = serviceCases[index] || serviceCases[0];
+            return `
+              <div class="list-row" onclick="navigateServiceDetail(${index})" style="cursor:pointer;">
+                <div>
+                  <div class="list-sub">${row.id} · ${itemCount}</div>
+                  <div class="list-title">${row.customer}</div>
+                </div>
+                <div style="text-align:right;">
+                  ${status(state)}
+                  <div class="list-sub">${payment}</div>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+      document.getElementById("pickupDayOverlay").classList.add("show");
+    }
+
+    function closePickupDay(event) {
+      if (event && event.target.id !== "pickupDayOverlay") return;
+      const overlay = document.getElementById("pickupDayOverlay");
+      if (overlay) overlay.classList.remove("show");
+    }
+
+    function renderApprovals() {
+      const states = ["Sent", "Pending", "Approved", "Draft"];
+      return `
+        <section class="page">
+          ${pageHeader("Service Operations", "Customer approvals", "Approval requests, resend controls, customer responses, and approval state before workshop proceeds.")}
+          <div class="grid grid-3">
+            <div class="approval-panel">
+              <div class="eyebrow">Portal Approval</div>
+              <div class="info-value">SRV-01942 · ${serviceCases[0].estimate}</div>
+              <p class="section-sub">Customer can approve, decline, or ask a question from the status link.</p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-primary">Approve</button><button class="btn">Decline</button><button class="btn">Ask Question</button></div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Approval before workshop</div>
+              <div class="info-value">Required for estimate changes</div>
+              <p class="section-sub">Approval event is stored on the service case and visible in activity history.</p>
+            </div>
+            <div class="info-box">
+              <div class="info-label">Resend controls</div>
+              <div class="info-value">SMS + email templates</div>
+              <p class="section-sub">Staff can resend the same status link without creating a duplicate thread.</p>
+            </div>
+          </div>
+          <div class="card table-scroll mt-5">
+            <table>
+              <thead><tr><th>Service ID</th><th>Customer</th><th>Item</th><th>Work Description</th><th>Estimate</th><th>Approval Status</th><th>Sent Date</th><th>Last Response</th><th>Actions</th></tr></thead>
+              <tbody>
+                ${serviceCases.slice(0, 4).map((x, i) => `
+                  <tr>
+                    <td class="primary">${x.id}</td><td>${x.customer}</td><td>${x.item}</td><td class="truncate">${x.description}</td><td class="primary">${x.estimate}</td><td>${status(states[i])}</td><td>${i === 3 ? "Not sent" : "May 20"}</td><td>${i === 2 ? "Approved by SMS" : i === 0 ? "Customer asked one question" : "No response"}</td><td>Open Thread</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderCustomers() {
+      return tablePage(
+        "Engagement",
+        "Customers",
+        "Customer directory connected to active cases, service history, communication logs, and item history.",
+        ["Customer Name", "Phone", "Email", "Active Cases", "Last Service Date", "Membership / Type", "Actions"],
+        customers.map(x => [x.name, x.phone, x.email, x.active, x.last, x.type, "View History"])
+      );
+    }
+
+    function renderMessages() {
+      return `
+        <section class="page">
+          ${pageHeader("Engagement", "Messages", "Service-linked SMS/email threads, internal notes, approval messages, automated notifications, and attachments.")}
+          <div class="grid grid-2">
+            <div class="card">
+              <div class="card-body">
+                <h2 class="section-title">Notification automation</h2>
+                <p class="section-sub">Mock evidence that customer messages are tied to service status changes.</p>
+                <div class="list">
+                  ${notificationEvents.map(([channel, title, state, time]) => `
+                    <div class="list-row">
+                      <div>
+                        <div class="list-title">${channel} · ${title}</div>
+                        <div class="list-sub">${time}</div>
+                      </div>
+                      ${status(state)}
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h2 class="section-title">Service chat thread</h2>
+                <p class="section-sub">Portal chat keeps approval context on the same service job.</p>
+                ${renderChatThread()}
+              </div>
+            </div>
+          </div>
+          <div class="card table-scroll mt-5">
+            <table>
+              <thead><tr><th>Customer</th><th>Service ID</th><th>Channel</th><th>Last Message</th><th>Status</th><th>Last Updated</th></tr></thead>
+              <tbody>
+                ${serviceCases.slice(0, 4).map((x, i) => `
+                  <tr><td class="primary">${x.customer}</td><td>${x.id}</td><td>${i % 2 ? "Email" : "SMS"}</td><td>${i === 0 ? "Photo update and portal approval sent" : i === 1 ? "Approval request pending" : "Pickup reminder sent"}</td><td>${i === 1 ? status("Pending") : status("Sent")}</td><td>${x.updated}</td></tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderPortal() {
+      const row = serviceCases[0];
+      return `
+        <section class="page">
+          ${pageHeader("Engagement", "Customer portal preview", "Customer-facing status page from the QR/status link, focused on the next customer action, repair progress, photos, and service conversation.")}
+          <div class="card portal-card">
+            <div class="card-body">
+              <div class="portal-head">
+                <div>
+                  <div class="secondary" style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:12px;">${row.id}</div>
+                  <h2 class="portal-title">${row.item}</h2>
+                  <p class="section-sub">For ${row.customer}</p>
+                </div>
+                ${status(row.status)}
+              </div>
+
+              <div class="portal-action-band">
+                <div class="section-head" style="margin-bottom:0;">
+                  <div>
+                    <div class="eyebrow">Next Step</div>
+                    <div class="info-value">${row.estimate} estimate ready for approval</div>
+                    <p class="section-sub">Stone tightening and claw inspection. Approval lets the workshop continue without another phone call.</p>
+                  </div>
+                  <div class="compact-actions">
+                    <button class="btn btn-primary">Approve Estimate</button>
+                    <button class="btn">Ask Question</button>
+                  </div>
+                </div>
+                <div class="portal-progress">
+                  <div class="progress-segment done"></div>
+                  <div class="progress-segment done"></div>
+                  <div class="progress-segment done"></div>
+                  <div class="progress-segment"></div>
+                  <div class="progress-segment"></div>
+                </div>
+              </div>
+
+              <div class="portal-layout">
+                <div class="portal-main">
+                  <div class="info-box">
+                    <div class="section-head">
+                      <div>
+                        <div class="info-value">Service details</div>
+                        <p class="section-sub">Customer-visible information from the service record.</p>
+                      </div>
+                    </div>
+                    <div class="summary-grid">
+                      <div class="summary-item"><div class="summary-k">Estimated completion</div><div class="summary-v">${row.due}</div></div>
+                      <div class="summary-item"><div class="summary-k">Current status</div><div class="summary-v">In progress</div></div>
+                      <div class="summary-item"><div class="summary-k">Messages</div><div class="summary-v">2 updates</div></div>
+                      <div class="summary-item"><div class="summary-k">Service request</div><div class="summary-v">${row.description}</div></div>
+                      <div class="summary-item"><div class="summary-k">Receipt</div><div class="summary-v">Digital copy available</div></div>
+                      <div class="summary-item"><div class="summary-k">Pickup notice</div><div class="summary-v">SMS when ready</div></div>
+                    </div>
+                  </div>
+
+                  <div class="info-box">
+                    <div class="section-head">
+                      <div>
+                        <div class="info-value">Photos</div>
+                        <p class="section-sub">Before and inspection photos connected to ${row.id}.</p>
+                      </div>
+                    </div>
+                    <div class="photo-grid">
+                      <div class="photo-placeholder filled">Before photo<br><span class="muted">ring-before-01942.jpg</span></div>
+                      <div class="photo-placeholder filled">Stone setting<br><span class="muted">claw-detail-01942.jpg</span></div>
+                      <div class="photo-placeholder filled">Receipt QR<br><span class="muted">srv-01942-link.png</span></div>
+                    </div>
+                  </div>
+
+                  <div class="info-box">
+                    <div class="info-value">Portal conversation</div>
+                    ${renderChatThread()}
+                  </div>
+                </div>
+
+                <div class="portal-side">
+                  <div class="info-box">
+                    <div class="info-value">Service timeline</div>
+                    ${renderStatusTimeline()}
+                  </div>
+                  <div class="info-box">
+                    <div class="info-value">Notifications</div>
+                    <div class="receipt-strip">
+                      <div class="receipt-chip"><span>Status link</span><strong>Sent</strong></div>
+                      <div class="receipt-chip"><span>Receipt email</span><strong>Sent</strong></div>
+                      <div class="receipt-chip"><span>Pickup SMS</span><strong>Queued</strong></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderReceipts() {
+      const lines = ["Service ID", "Customer Details", "Item Description", "Service Request", "Workshop Message", "Warranty / Guarantee", "Price Estimate", "QR / Status Link", "Terms / Signature"];
+      return `
+        <section class="page">
+          ${pageHeader("Documents", "Receipt preview", "Printable service receipt mapped to store, customer, workshop, and internal copies.")}
+          <div class="receipt-grid">
+            ${["Store Copy", "Customer Copy", "Workshop Copy", "Internal Copy"].map(copy => `
+              <div class="card">
+                <div class="card-body">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                    <h2 class="section-title" style="font-size:18px;">${copy}</h2>
+                    <span class="muted">□</span>
+                  </div>
+                  ${lines.map(line => `<div class="receipt-line">${line}</div>`).join("")}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderReports() {
+      const cards = [
+        ["Cases by Status", "42 active cases"], ["Overdue Cases", "4 require action"],
+        ["Pending Approval", "9 waiting customer"], ["Ready for Pickup", "11 notified"],
+        ["Avg. Turnaround", "6.4 days"], ["Workshop Load", "78% capacity"],
+        ["Completed Cases", "64 this month"], ["Estimated Revenue", "$38,420"]
+      ];
+      return `
+        <section class="page">
+          ${pageHeader("Insights", "Reports", "Operational reporting for management visibility across cases, approvals, workshop load, turnaround, and revenue.")}
+          <div class="grid grid-4">
+            ${cards.map(([a,b]) => metric("▥", a, b, "Service POC metric")).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderSettings() {
+      const sections = ["Service Statuses", "Service Categories", "Notification Templates", "Receipt Template", "Staff / Workshop Users", "Customer Portal Settings", "HubSpot Integration", "SMS / Email Settings"];
+      return tablePage(
+        "Admin",
+        "Settings",
+        "Administrative setup for workflow, templates, users, customer portal, and integrations.",
+        ["Section", "Purpose", "Status"],
+        sections.map(x => [x, "Configuration area", status("Draft")])
+      );
+    }
+
+    function renderProducts() {
+      return tablePage(
+        "Admin",
+        "Products",
+        "Global product catalog for SDE item types and sellable product references. This is not inventory stock tracking.",
+        ["Product", "Category", "Default Handling", "Catalog Status", "Actions"],
+        [
+          ["Vintage Cartier Ring", "Ring", "Photo + hallmark required", status("Approved"), "Edit"],
+          ["Rolex Datejust", "Watch", "Serial and pressure-test notes", status("Approved"), "Edit"],
+          ["Diamond Pendant", "Pendant", "Stone notes required", status("Draft"), "Edit"],
+          ["Pearl Necklace", "Necklace", "Stringing service compatible", status("Approved"), "Edit"],
+        ]
+      );
+    }
+
+    function renderServicesList() {
+      return tablePage(
+        "Admin",
+        "Services",
+        "Global service catalog used during intake, estimates, approvals, receipts, and workshop instructions.",
+        ["Service", "Category", "Default Price", "Approval Required", "Status"],
+        [
+          ["Claw tightening", "Jewelry repair", "$1,200", "Yes", status("Approved")],
+          ["Watch polish", "Watch service", "$450", "No", status("Approved")],
+          ["Pressure test", "Watch service", "$320", "No", status("Approved")],
+          ["Pearl restringing", "Jewelry repair", "$260", "No", status("Draft")],
+        ]
+      );
+    }
+
+    function renderPage() {
+      const pages = {
+        dashboard: renderDashboard,
+        service: renderServiceCases,
+        "service-new": renderNewService,
+        "service-detail": renderServiceDetail,
+        workshop: renderWorkshop,
+        pickups: renderPickupCalendar,
+        approvals: renderApprovals,
+        customers: renderCustomers,
+        messages: renderMessages,
+        portal: renderPortal,
+        receipts: renderReceipts,
+        reports: renderReports,
+        products: renderProducts,
+        "services-list": renderServicesList,
+        settings: renderSettings,
+      };
+      document.getElementById("content").innerHTML = (pages[active] || renderDashboard)();
+    }
+
+    if (window.location.hash === "#/service/new") {
+      active = "service-new";
+    } else if (window.location.hash.startsWith("#/service/")) {
+      const serviceId = window.location.hash.replace("#/service/", "");
+      const matchedIndex = serviceCases.findIndex(row => row.id === serviceId);
+      if (matchedIndex >= 0) {
+        activeServiceIndex = matchedIndex;
+        active = "service-detail";
+      }
+    }
+
+    renderNav();
+    renderPage();
+  </script>
+</body>
+</html>
