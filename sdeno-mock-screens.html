@@ -342,6 +342,216 @@
     .bg-ready { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
     .bg-overdue { background: #fff1f2; border-color: #fecdd3; color: #be123c; }
 
+    .kanban-board {
+      display: flex;
+      gap: 10px;
+      align-items: start;
+      overflow-x: auto;
+      min-height: calc(100vh - 330px);
+      padding: 2px 2px 12px;
+      scroll-snap-type: x proximity;
+    }
+
+    .kanban-column {
+      flex: 0 0 248px;
+      min-width: 248px;
+      max-width: 248px;
+      min-height: calc(100vh - 348px);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: rgba(255,255,255,.74);
+      scroll-snap-align: start;
+    }
+
+    .kanban-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-soft);
+      border-top: 4px solid var(--silver);
+      padding: 10px 12px;
+    }
+
+    .kanban-title {
+      color: var(--black);
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.25;
+    }
+
+    .kanban-count {
+      display: inline-flex;
+      min-width: 24px;
+      height: 24px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      background: var(--paper);
+      color: var(--gray);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .kanban-list {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .kanban-card {
+      border: 1px solid rgba(185,188,195,.6);
+      border-radius: 2px;
+      background: var(--white);
+      padding: 10px;
+      text-align: left;
+      transition: border-color 140ms ease, transform 140ms ease;
+    }
+
+    .kanban-card:hover {
+      border-color: var(--navy);
+      transform: translateY(-1px);
+    }
+
+    .kanban-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--gray);
+      font-size: 10px;
+    }
+
+    .kanban-card-title {
+      margin-top: 6px;
+      color: var(--black);
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.35;
+    }
+
+    .kanban-card-sub {
+      margin-top: 3px;
+      color: var(--gray);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .kanban-card-brand {
+      margin-top: 6px;
+      color: var(--gray);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .kanban-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .kanban-card-foot {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .kanban-received .kanban-head { border-top-color: #93a4bd; }
+    .kanban-approval .kanban-head { border-top-color: #d97706; }
+    .kanban-progress .kanban-head { border-top-color: #2563eb; }
+    .kanban-ready .kanban-head { border-top-color: #059669; }
+    .kanban-completed .kanban-head { border-top-color: #64748b; }
+    .kanban-overdue .kanban-head { border-top-color: #dc2626; }
+
+    .service-hero {
+      display: grid;
+      gap: 18px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .service-hero-main {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .service-avatar {
+      display: grid;
+      width: 58px;
+      height: 58px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 2px;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .service-hero-title {
+      margin: 3px 0 0;
+      color: var(--black);
+      font-size: 26px;
+      line-height: 1.18;
+      font-weight: 760;
+      letter-spacing: -.02em;
+    }
+
+    .service-hero-sub {
+      margin-top: 6px;
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    .service-hero-side {
+      display: grid;
+      justify-items: end;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .service-stage {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      align-items: center;
+    }
+
+    .stage-step {
+      display: grid;
+      gap: 6px;
+      color: var(--gray);
+      font-size: 12px;
+      min-width: 0;
+    }
+
+    .stage-line {
+      height: 3px;
+      border-radius: 999px;
+      background: var(--border-soft);
+    }
+
+    .stage-step.done .stage-line,
+    .stage-step.active .stage-line {
+      background: var(--navy);
+    }
+
+    .stage-step.active {
+      color: var(--navy);
+      font-weight: 750;
+    }
+
     .list {
       display: grid;
       gap: 12px;
@@ -559,7 +769,7 @@
       font-weight: 750;
     }
 
-    .payment-row {
+    .workflow-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -569,14 +779,12 @@
       line-height: 1.5;
     }
 
-    .payment-row strong {
+    .workflow-row strong {
       color: var(--black);
       font-weight: 750;
     }
 
-    .paid-text { color: #047857; }
-
-    .balance-pill {
+    .action-pill {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1229,18 +1437,391 @@
 
     .customer-detail-grid {
       display: grid;
-      gap: 16px;
+      gap: 20px 28px;
+      align-items: start;
+    }
+
+    .customer-info-row {
+      display: grid;
+      gap: 18px;
+    }
+
+    .customer-action-row {
+      display: grid;
+      gap: 18px;
+      align-items: end;
+    }
+
+    .customer-action-group {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: end;
     }
 
     .detail-divider {
       border-top: 1px solid var(--border-soft);
-      margin: 4px 0;
+      margin: 8px 0;
     }
 
-    .note-row {
+    .note-row { display: grid; gap: 14px; align-items: end; }
+
+    .record-panel {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      overflow: hidden;
+    }
+
+    .record-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-soft);
+      padding: 0 14px;
+    }
+
+    .record-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .record-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      color: var(--gray);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .record-tab.active {
+      border-bottom-color: var(--navy);
+      color: var(--navy);
+    }
+
+    .record-count {
+      min-width: 22px;
+      border-radius: 999px;
+      background: rgba(29,59,90,.1);
+      color: var(--navy);
+      padding: 2px 7px;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .record-tools {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .record-search {
+      width: 170px;
+      height: 34px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--paper);
+      padding: 0 10px;
+      color: var(--black);
+      font: inherit;
+      font-size: 12px;
+    }
+
+    .note-composer {
+      display: grid;
+      gap: 18px;
+      margin: 14px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--paper);
+      padding: 16px;
+    }
+
+    .composer-placeholder {
+      min-height: 58px;
+      color: var(--gray);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .composer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .composer-actions-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .activity-feed {
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .activity-item {
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 12px;
+      padding: 14px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .activity-item:last-child { border-bottom: 0; }
+
+    .activity-icon {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--gray);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .activity-title {
+      color: var(--black);
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .activity-copy {
+      margin-top: 5px;
+      color: var(--gray);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .activity-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .side-info-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .side-info-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid var(--border-soft);
+      padding: 10px 0;
+    }
+
+    .side-info-row:last-child { border-bottom: 0; }
+
+    .side-info-row span {
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .side-info-row strong {
+      max-width: 58%;
+      color: var(--black);
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: right;
+    }
+
+    .person-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 10px;
+    }
+
+    .person-avatar {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .person-name {
+      color: var(--black);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .person-role {
+      margin-top: 2px;
+      color: var(--gray);
+      font-size: 12px;
+    }
+
+    .creation-form {
+      display: grid;
+      gap: 16px;
+      padding: 14px;
+    }
+
+    .onboarding-header {
+      display: grid;
+      gap: 14px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--white);
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+
+    .onboarding-title {
+      margin: 0;
+      color: var(--black);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .onboarding-steps {
+      display: grid;
+      gap: 8px;
+    }
+
+    .onboarding-step {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--paper);
+      padding: 10px;
+      color: var(--gray);
+      text-align: left;
+      cursor: pointer;
+      transition: none;
+    }
+
+    .onboarding-step.active {
+      border-color: var(--navy);
+      background: #f8fafc;
+      color: var(--black);
+    }
+
+    .onboarding-step.done {
+      color: var(--black);
+    }
+
+    .onboarding-index {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .onboarding-step-title {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .onboarding-step-copy {
+      margin-top: 2px;
+      color: var(--gray);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .step-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid var(--border-soft);
+      margin-top: 16px;
+      padding-top: 14px;
+    }
+
+    .creation-section {
+      display: grid;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-soft);
+      padding-bottom: 16px;
+    }
+
+    .creation-section:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .creation-section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .creation-section-title {
+      color: var(--black);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .creation-summary-card {
       display: grid;
       gap: 10px;
-      align-items: end;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--paper);
+      padding: 12px;
+    }
+
+    .confirm-summary {
+      display: grid;
+      gap: 8px;
+    }
+
+    .confirm-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      border: 1px solid var(--border-soft);
+      border-radius: 2px;
+      padding: 10px;
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    .confirm-row strong {
+      color: var(--black);
+      text-align: right;
     }
 
     .detail-text {
@@ -1373,13 +1954,21 @@
       .channel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .channel-cell { border-right: 1px solid var(--border-soft); }
       .channel-cell:nth-child(2n) { border-right: 0; }
+      .onboarding-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .customer-detail-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .customer-detail-grid { grid-template-columns: 1fr; }
+      .customer-info-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .customer-action-row { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); }
       .customer-detail-grid .full-row { grid-column: 1 / -1; }
-      .note-row { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.2fr) auto; }
       .calendar-cell { min-height: 132px; }
       .modal-footer .btn { flex: 0 0 auto; }
+      .service-hero {
+        grid-template-columns: 1fr;
+      }
+      .service-stage {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
 
     @media (min-width: 1180px) {
@@ -1435,6 +2024,7 @@
       .detail-grid { padding: 20px; }
       .case-layout { grid-template-columns: minmax(0, 1.55fr) minmax(320px, .85fr); }
       .portal-layout { grid-template-columns: minmax(0, 1.35fr) minmax(320px, .75fr); }
+      .service-stage { grid-template-columns: repeat(6, minmax(0, 1fr)); }
     }
   </style>
 </head>
@@ -1468,7 +2058,6 @@
       ]},
       { label: "Engagement", items: [
         { id: "customers", label: "Customers", icon: "◎" },
-        { id: "messages", label: "Messages", icon: "✉" },
         { id: "portal", label: "Customer Portal Preview", icon: "▤" },
       ]},
       { label: "Documents", items: [{ id: "receipts", label: "Receipts", icon: "□" }] },
@@ -1481,12 +2070,21 @@
     ];
 
     const serviceCases = [
-      { id: "SRV-01942", customer: "Amelia Grant", contact: "+47 412 88 109 / amelia@email.com", item: "Vintage Cartier Ring", description: "Stone tightening and claw inspection", status: "In progress", due: "May 22, 2026", estimate: "$1,200", updated: "12 min ago", priority: "High", assigned: "Jonas" },
-      { id: "SRV-01941", customer: "Marcus Lee", contact: "+47 944 18 230 / marcus@email.com", item: "Rolex Datejust", description: "Polish, pressure test, inspection", status: "Pending Approval", due: "May 24, 2026", estimate: "$450", updated: "1 hr ago", priority: "Normal", assigned: "Mikael" },
-      { id: "SRV-01938", customer: "Sofia Reyes", contact: "+47 970 42 558 / sofia@email.com", item: "Diamond Pendant", description: "Chain replacement and clasp check", status: "Ready for Pickup", due: "Ready", estimate: "$320", updated: "Today", priority: "Low", assigned: "Nora" },
-      { id: "SRV-01931", customer: "Daniel Kim", contact: "+47 901 77 412 / daniel@email.com", item: "Emerald Bracelet", description: "Clasp repair and safety chain", status: "Overdue", due: "May 16, 2026", estimate: "$780", updated: "Yesterday", priority: "High", assigned: "Jonas" },
-      { id: "SRV-01927", customer: "Lina Berg", contact: "+47 482 11 880 / lina@email.com", item: "Pearl Necklace", description: "Restringing and clasp replacement", status: "Completed", due: "Completed", estimate: "$260", updated: "2 days ago", priority: "Normal", assigned: "Nora" },
-      { id: "SRV-01920", customer: "Erik Holm", contact: "+47 455 66 018 / erik@email.com", item: "Omega Seamaster", description: "Service received, photos captured, estimate pending", status: "Service Received", due: "May 28, 2026", estimate: "TBD", updated: "3 days ago", priority: "Normal", assigned: "Unassigned" },
+      { id: "SRV-01942", customer: "Amelia Grant", contact: "+47 412 88 109 / amelia@email.com", item: "Vintage Cartier Ring", description: "Stone tightening and claw inspection", status: "In progress", due: "May 22, 2026", estimate: "Scope approved", updated: "12 min ago", priority: "High", assigned: "Jonas" },
+      { id: "SRV-01941", customer: "Marcus Lee", contact: "+47 944 18 230 / marcus@email.com", item: "Rolex Datejust", description: "Polish, pressure test, inspection", status: "Pending Approval", due: "May 24, 2026", estimate: "Awaiting approval", updated: "1 hr ago", priority: "Normal", assigned: "Mikael" },
+      { id: "SRV-01938", customer: "Sofia Reyes", contact: "+47 970 42 558 / sofia@email.com", item: "Diamond Pendant", description: "Chain replacement and clasp check", status: "Ready for Pickup", due: "Ready", estimate: "Pickup ready", updated: "Today", priority: "Low", assigned: "Nora" },
+      { id: "SRV-01931", customer: "Daniel Kim", contact: "+47 901 77 412 / daniel@email.com", item: "Emerald Bracelet", description: "Clasp repair and safety chain", status: "Overdue", due: "May 16, 2026", estimate: "Needs follow-up", updated: "Yesterday", priority: "High", assigned: "Jonas" },
+      { id: "SRV-01927", customer: "Lina Berg", contact: "+47 482 11 880 / lina@email.com", item: "Pearl Necklace", description: "Restringing and clasp replacement", status: "Completed", due: "Completed", estimate: "Closed", updated: "2 days ago", priority: "Normal", assigned: "Nora" },
+      { id: "SRV-01920", customer: "Erik Holm", contact: "+47 455 66 018 / erik@email.com", item: "Omega Seamaster", description: "Service received, photos captured, work scope pending", status: "Service Received", due: "May 28, 2026", estimate: "Scope pending", updated: "3 days ago", priority: "Normal", assigned: "Unassigned" },
+    ];
+
+    const serviceBoardColumns = [
+      "Service Received",
+      "Pending Approval",
+      "In progress",
+      "Ready for Pickup",
+      "Completed",
+      "Overdue",
     ];
 
     const activity = [
@@ -1507,10 +2105,10 @@
       ["Create or find customer", "Lookup Amelia Grant, confirm phone/email, then link the service record to her profile.", "done"],
       ["Generate service ID", "SRV-01942 is created automatically and appears on receipts, workshop views, messages, and portal links.", "done"],
       ["Capture item and photos", "Vintage Cartier Ring details plus before, hallmark, and stone-setting photos are attached.", "done"],
-      ["Add workshop instructions", "Stone tightening, claw inspection, warranty note, due date, and price estimate are recorded.", "done"],
+      ["Add workshop instructions", "Stone tightening, claw inspection, warranty note, due date, and service scope are recorded.", "done"],
       ["Generate receipt", "Store, customer, workshop, and internal copies are prepared with a QR/status link.", "done"],
-      ["Send SMS/email status link", "Customer receives a portal link with status, estimate, photos, and approval controls.", "done"],
-      ["Customer portal review", "Customer checks the repair details, asks a question, and approves the estimate.", "current"],
+      ["Send SMS/email status link", "Customer receives a portal link with status, service scope, photos, and approval controls.", "done"],
+      ["Customer portal review", "Customer checks the repair details, asks a question, and approves the work scope.", "current"],
       ["Staff status updates", "Service moves from Service received to Pending approval, In progress, Ready for pickup, then Completed.", "pending"],
       ["Automated notifications", "Status changes trigger SMS/email messages and pickup reminders.", "pending"],
       ["Activity log", "Each status, communication, approval, and receipt event is recorded on the service case.", "pending"],
@@ -1529,7 +2127,7 @@
       ["Photo", "Before photos attached", "May 20, 09:18", "3 customer-visible photos linked to item and service ID."],
       ["Receipt", "Digital receipt prepared", "May 20, 09:21", "Store, customer, workshop, and internal copies available."],
       ["SMS", "Status link sent", "May 20, 09:32", "Customer opened portal from SMS."],
-      ["Approval", "Estimate approved", "May 20, 10:04", "Customer approved $1,200 stone tightening estimate."],
+      ["Approval", "Work scope approved", "May 20, 10:04", "Customer approved the stone tightening service scope."],
       ["Status", "Moved to In progress", "May 20, 11:06", "Workshop accepted job and added internal note."],
     ];
 
@@ -1541,7 +2139,7 @@
     ];
 
     const portalThread = [
-      ["staff", "Hi Amelia, we inspected the ring. The claws need tightening before polishing. Estimate is $1,200."],
+      ["staff", "Hi Amelia, we inspected the ring. The claws need tightening before polishing. Please confirm the service scope so the workshop can proceed."],
       ["customer", "Please proceed. Can you also keep the original finish as much as possible?"],
       ["staff", "Yes. Workshop note updated. We will send a pickup message once the ring passes final inspection."],
     ];
@@ -1549,27 +2147,29 @@
     const notificationEvents = [
       ["SMS", "Status link sent", "Sent", "May 20, 09:32"],
       ["Email", "Digital service receipt delivered", "Sent", "May 20, 09:33"],
-      ["Portal", "Estimate approved by customer", "Approved", "May 20, 10:04"],
+      ["Portal", "Work scope approved by customer", "Approved", "May 20, 10:04"],
       ["SMS", "Ready for pickup reminder", "Draft", "Triggers when status changes"],
     ];
 
     const pickupCaseMap = {
-      "18": [[4, "1 item", "Completed", "Paid"]],
-      "19": [[1, "1 item", "Pending", "$450 due"], [2, "1 item", "Ready", "Paid"], [3, "1 item", "Overdue", "$780 due"]],
-      "20": [[0, "2 items", "In progress", "$1,000 due"], [1, "1 item", "Pending", "$450 due"], [2, "1 item", "Ready", "Paid"]],
-      "21": [[2, "1 item", "Ready", "Paid"], [4, "1 item", "Completed", "Paid"]],
-      "22": [[0, "1 item", "In progress", "$1,000 due"]],
-      "23": [[3, "1 item", "Overdue", "$780 due"]],
-      "24": [[4, "1 item", "Completed", "Paid"]],
-      "26": [[0, "1 item", "In progress", "$1,000 due"], [2, "1 item", "Ready", "Paid"]],
-      "27": [[1, "1 item", "Pending", "$450 due"]],
-      "28": [[5, "1 item", "Service received", "Estimate pending"]],
-      "29": [[0, "1 item", "In progress", "$1,000 due"], [3, "1 item", "Overdue", "$780 due"]],
-      "30": [[2, "1 item", "Ready", "Paid"]],
+      "18": [[4, "1 item", "Completed", "Closed"]],
+      "19": [[1, "1 item", "Pending", "Needs response"], [2, "1 item", "Ready", "Pickup notified"], [3, "1 item", "Overdue", "Follow-up needed"]],
+      "20": [[0, "2 items", "In progress", "Workshop active"], [1, "1 item", "Pending", "Needs response"], [2, "1 item", "Ready", "Pickup notified"]],
+      "21": [[2, "1 item", "Ready", "Pickup notified"], [4, "1 item", "Completed", "Closed"]],
+      "22": [[0, "1 item", "In progress", "Workshop active"]],
+      "23": [[3, "1 item", "Overdue", "Follow-up needed"]],
+      "24": [[4, "1 item", "Completed", "Closed"]],
+      "26": [[0, "1 item", "In progress", "Workshop active"], [2, "1 item", "Ready", "Pickup notified"]],
+      "27": [[1, "1 item", "Pending", "Needs response"]],
+      "28": [[5, "1 item", "Service received", "Scope pending"]],
+      "29": [[0, "1 item", "In progress", "Workshop active"], [3, "1 item", "Overdue", "Follow-up needed"]],
+      "30": [[2, "1 item", "Ready", "Pickup notified"]],
     };
 
     let active = "dashboard";
     let activeServiceIndex = 0;
+    let activeNewServiceStep = 0;
+    let activeServiceTab = "activity";
 
     function statusClass(status) {
       const s = status.toLowerCase();
@@ -1592,6 +2192,17 @@
 
     function status(status) {
       return `<span class="status ${statusClass(status)}">${status}</span>`;
+    }
+
+    function kanbanColumnClass(column) {
+      const s = column.toLowerCase();
+      if (s.includes("received")) return "kanban-received";
+      if (s.includes("approval")) return "kanban-approval";
+      if (s.includes("progress")) return "kanban-progress";
+      if (s.includes("ready")) return "kanban-ready";
+      if (s.includes("completed")) return "kanban-completed";
+      if (s.includes("overdue")) return "kanban-overdue";
+      return "";
     }
 
     function pageHeader(eyebrow, title, description, action = "") {
@@ -1688,7 +2299,7 @@
         <div class="nav-group">
           <div class="nav-label">${group.label}</div>
           ${group.items.map(item => `
-            <button class="nav-item ${active === item.id || (item.id === "service" && active.startsWith("service-")) ? "active" : ""}" onclick="navigate('${item.id}')">
+            <button class="nav-item ${active === item.id || (item.id === "service" && active.startsWith("service-")) || (item.id === "workshop" && active.startsWith("workshop-")) || (item.id === "approvals" && active.startsWith("approval-")) ? "active" : ""}" onclick="navigate('${item.id}')">
               <span class="nav-icon">${item.icon}</span>
               <span>${item.label}</span>
             </button>
@@ -1705,6 +2316,7 @@
 
     function navigateNewService() {
       active = "service-new";
+      activeNewServiceStep = 0;
       renderNav();
       renderPage();
       if (window.location.hash !== "#/service/new") {
@@ -1712,14 +2324,59 @@
       }
     }
 
+    function setNewServiceStep(index) {
+      activeNewServiceStep = Math.max(0, Math.min(2, index));
+      renderPage();
+    }
+
+    function nextNewServiceStep() {
+      if (activeNewServiceStep >= 2) {
+        openCreateCaseConfirm();
+        return;
+      }
+      setNewServiceStep(activeNewServiceStep + 1);
+    }
+
+    function previousNewServiceStep() {
+      setNewServiceStep(activeNewServiceStep - 1);
+    }
+
     function navigateServiceDetail(index) {
       activeServiceIndex = index;
       active = "service-detail";
+      activeServiceTab = "activity";
       renderNav();
       renderPage();
       const row = serviceCases[index];
       if (row && window.location.hash !== `#/service/${row.id}`) {
         window.location.hash = `/service/${row.id}`;
+      }
+    }
+
+    function setServiceTab(tab) {
+      activeServiceTab = tab;
+      renderPage();
+    }
+
+    function navigateWorkshopDetail(index) {
+      activeServiceIndex = index;
+      active = "workshop-detail";
+      renderNav();
+      renderPage();
+      const row = serviceCases[index];
+      if (row && window.location.hash !== `#/workshop/${row.id}`) {
+        window.location.hash = `/workshop/${row.id}`;
+      }
+    }
+
+    function navigateApprovalDetail(index) {
+      activeServiceIndex = index;
+      active = "approval-detail";
+      renderNav();
+      renderPage();
+      const row = serviceCases[index];
+      if (row && window.location.hash !== `#/approvals/${row.id}`) {
+        window.location.hash = `/approvals/${row.id}`;
       }
     }
 
@@ -1729,7 +2386,7 @@
           <div class="dashboard-head">
             <div>
               <h1>Dashboard</h1>
-              <p class="page-desc">Monthly service and collection summary</p>
+              <p class="page-desc">Monthly service workflow summary</p>
             </div>
             <div class="dashboard-filters">
               <select class="filter-control"><option>Lifetime</option></select>
@@ -1743,22 +2400,22 @@
             <button class="btn" onclick="navigateNewService()">＋ New Service</button>
             <button class="btn" onclick="navigate('approvals')">✓ New Approval</button>
             <button class="btn" onclick="navigate('receipts')">□ New Receipt</button>
-            <button class="btn" onclick="navigate('messages')">✉ Message Customer</button>
+            <button class="btn" onclick="navigate('service')">▤ Workflow Board</button>
           </div>
 
           <div class="grid grid-3 mt-5">
             <div class="card"><div class="metric-body"><div class="eyebrow">Service cases</div><div class="metric-large">42</div><div class="metric-note">9 pending approval</div></div></div>
-            <div class="card"><div class="metric-body"><div class="eyebrow">Estimated revenue</div><div class="metric-large">$38,420</div><div class="metric-note"><span class="amount-green">$31,200 collected</span> · $7,220 outstanding</div></div></div>
-            <div class="card"><div class="metric-body"><div class="eyebrow">Service margin</div><div class="metric-large">$12,840</div><div class="metric-note amount-red">$4,200 workshop expenses</div></div></div>
+            <div class="card"><div class="metric-body"><div class="eyebrow">Workshop load</div><div class="metric-large">18</div><div class="metric-note">4 high priority jobs</div></div></div>
+            <div class="card"><div class="metric-body"><div class="eyebrow">Pickup readiness</div><div class="metric-large">11</div><div class="metric-note">7 within 3 days</div></div></div>
           </div>
 
           <div class="mt-6">
-            <p class="section-sub" style="margin-bottom:10px;">Collection channels</p>
+            <p class="section-sub" style="margin-bottom:10px;">Workflow distribution</p>
             <div class="channel-grid">
-              <div class="channel-cell"><div class="eyebrow">Card</div><div class="info-value">$12,450</div></div>
-              <div class="channel-cell"><div class="eyebrow">Bank Deposit</div><div class="info-value">$9,830</div></div>
-              <div class="channel-cell"><div class="eyebrow">Cash</div><div class="info-value">$8,140</div></div>
-              <div class="channel-cell"><div class="eyebrow">Invoice</div><div class="info-value">$7,220</div><div class="section-sub amount-red">outstanding</div></div>
+              <div class="channel-cell"><div class="eyebrow">Received</div><div class="info-value">6 cases</div></div>
+              <div class="channel-cell"><div class="eyebrow">Approval</div><div class="info-value">9 cases</div></div>
+              <div class="channel-cell"><div class="eyebrow">Workshop</div><div class="info-value">18 cases</div></div>
+              <div class="channel-cell"><div class="eyebrow">Pickup</div><div class="info-value">11 cases</div><div class="section-sub">customer notification queue</div></div>
             </div>
           </div>
 
@@ -1766,14 +2423,14 @@
             <div class="card-body">
               <div class="section-head">
                 <div>
-                  <h2 class="section-title">Today's collections</h2>
-                  <p class="section-sub">Payments recorded today</p>
+                  <h2 class="section-title">Today's workflow movement</h2>
+                  <p class="section-sub">Service cases that changed status today</p>
                 </div>
-                <div class="amount-green">$1,200</div>
+                <div class="muted">6 updates</div>
               </div>
               <div class="list">
-                <div class="list-row"><div><div class="list-title">SRV-01942</div><div class="list-sub">Amelia Grant</div></div><div><div class="list-title amount-green">$1,000</div><div class="list-sub">Card</div></div></div>
-                <div class="list-row"><div><div class="list-title">SRV-01941</div><div class="list-sub">Marcus Lee</div></div><div><div class="list-title amount-green">$200</div><div class="list-sub">Cash</div></div></div>
+                <div class="list-row"><div><div class="list-title">SRV-01942</div><div class="list-sub">Amelia Grant</div></div><div>${status("In progress")}</div></div>
+                <div class="list-row"><div><div class="list-title">SRV-01941</div><div class="list-sub">Marcus Lee</div></div><div>${status("Pending Approval")}</div></div>
               </div>
             </div>
           </div>
@@ -1790,10 +2447,10 @@
             </div>
             <div class="card">
               <div class="card-body">
-                <h2 class="section-title">Recent service transactions</h2>
+                <h2 class="section-title">Recent service updates</h2>
                 <div class="list">
-                  <div class="list-row"><div><div class="list-title">SRV-01941</div><div class="list-sub">Marcus Lee · May 20, 2026</div></div><div><div class="list-title">$450</div>${status("Pending")}</div></div>
-                  <div class="list-row"><div><div class="list-title">SRV-01938</div><div class="list-sub">Sofia Reyes · May 19, 2026</div></div><div><div class="list-title">$320</div>${status("Ready")}</div></div>
+                  <div class="list-row"><div><div class="list-title">SRV-01941</div><div class="list-sub">Marcus Lee · May 20, 2026</div></div><div>${status("Pending")}</div></div>
+                  <div class="list-row"><div><div class="list-title">SRV-01938</div><div class="list-sub">Sofia Reyes · May 19, 2026</div></div><div>${status("Ready")}</div></div>
                 </div>
               </div>
             </div>
@@ -1806,58 +2463,177 @@
       const action = `<button class="btn btn-primary" onclick="navigateNewService()">＋ New Service Case</button>`;
       return `
         <section class="page">
-          ${pageHeader("Service Operations", "Service cases", "Main operational queue for jewelry repair, customer approvals, workshop progress, receipt printing, and status changes.", action)}
+          ${pageHeader("Service Operations", "Service workflow board", "Status-based board for repair intake, customer approvals, workshop progress, pickup readiness, and completed cases.", action)}
           <div class="filter-tabs">
-            <button class="filter-tab active">All 42</button>
-            <button class="filter-tab">Pending 9</button>
-            <button class="filter-tab">In Progress 18</button>
-            <button class="filter-tab">Ready 11</button>
-            <button class="filter-tab">Completed 64</button>
-            <button class="filter-tab">Cancelled 0</button>
+            <button class="filter-tab active">All <span class="kanban-count">42</span></button>
+            <button class="filter-tab">Approvals <span class="kanban-count">9</span></button>
+            <button class="filter-tab">Workshop <span class="kanban-count">18</span></button>
+            <button class="filter-tab">Pickup <span class="kanban-count">11</span></button>
+            <button class="filter-tab">Overdue <span class="kanban-count">4</span></button>
           </div>
-          <div class="filter-bar">
-            <select class="field-control"><option>All Branches</option><option>Oslo Store</option><option>Workshop</option></select>
-            <input class="field-control" placeholder="Search service ID, customer, item..." />
-            <span class="muted">From</span>
-            <input class="field-control date-field" placeholder="dd/mm/yyyy" />
-            <span class="muted">to</span>
-            <input class="field-control date-field" placeholder="dd/mm/yyyy" />
-            <button class="btn btn-primary">⌕ Search</button>
+          <div class="filter-bar" style="justify-content:flex-end;">
+            <input class="field-control" placeholder="Search" />
+            <button class="btn">＋ New Service Type</button>
+            <button class="btn btn-primary" onclick="navigateNewService()">＋ New Service Case</button>
+            <select class="field-control"><option>All Staff</option><option>Jonas</option><option>Nora</option><option>Mikael</option></select>
           </div>
-          <div class="card table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Service ID</th><th>Customer</th><th>Item / Product</th><th>Service / Repair Description</th><th>Price Estimate</th><th>Status</th><th>Est. Completion</th><th>Last Updated</th><th>Quick Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${serviceCases.map((row, index) => `
-                  <tr class="clickable-row" onclick="navigateServiceDetail(${index})">
-                    <td class="primary" style="font-family: ui-monospace, SFMono-Regular, Menlo, monospace;">${row.id}</td>
-                    <td class="primary">${row.customer}</td>
-                    <td>${row.item}</td>
-                    <td class="truncate">${row.description}</td>
-                    <td class="primary">${row.estimate}</td>
-                    <td>${status(row.status)}</td>
-                    <td>${row.due}</td>
-                    <td class="secondary">${row.updated}</td>
-                    <td>
-                      <div class="table-actions" onclick="event.stopPropagation()">
-                        <button class="btn btn-sm btn-ghost">✉</button>
-                        <button class="btn btn-sm btn-ghost">□</button>
-                      </div>
-                    </td>
-                  </tr>
-                `).join("")}
-              </tbody>
-            </table>
+          <div class="kanban-board">
+            ${serviceBoardColumns.map(column => {
+              const rows = serviceCases
+                .map((row, index) => ({ row, index }))
+                .filter(({ row }) => row.status.toLowerCase() === column.toLowerCase());
+              return `
+	                <div class="kanban-column ${kanbanColumnClass(column)}">
+                  <div class="kanban-head">
+                    <div class="kanban-title">${column}</div>
+                    <div class="kanban-count">${rows.length}</div>
+                  </div>
+                  <div class="kanban-list">
+                    ${rows.map(({ row, index }) => `
+                      <button class="kanban-card" onclick="navigateServiceDetail(${index})">
+	                        <div class="kanban-meta">
+	                          <span>${row.id}</span>
+	                          <span>⋯</span>
+	                        </div>
+	                        <div class="kanban-card-brand">${row.customer}</div>
+	                        <div class="kanban-card-title">${row.item}</div>
+	                        <div class="kanban-chip-row">
+	                          ${status(row.priority)}
+	                          ${status(row.estimate)}
+	                        </div>
+                        <div class="kanban-card-foot">
+                          <span class="list-sub">${row.due}</span>
+                          <span class="list-sub">${row.assigned}</span>
+                        </div>
+                      </button>
+                    `).join("") || `<div class="list-sub">No cases in this status.</div>`}
+                  </div>
+                </div>
+              `;
+            }).join("")}
           </div>
         </section>
       `;
     }
 
     function renderNewService() {
+      const steps = [
+        ["Customer", "Find or create the customer record"],
+        ["Service", "Capture item, photos, and requested work"],
+        ["Workshop", "Add internal instructions and review"],
+      ];
+      const stepName = steps[activeNewServiceStep][0];
+      const stepContent = activeNewServiceStep === 0 ? `
+        <div class="creation-section">
+          <div class="creation-section-head">
+            <div>
+              <div class="creation-section-title">Customer lookup</div>
+              <p class="section-sub">Find or create the customer before the item enters the service workflow.</p>
+            </div>
+            <button class="btn btn-sm">Find Customer</button>
+          </div>
+          <div class="grid grid-2">
+            <label class="field-label">Phone or email
+              <input class="field-control" value="+47 412 88 109" />
+            </label>
+            <label class="field-label">Customer name
+              <input class="field-control" value="Amelia Grant" />
+            </label>
+            <label class="field-label">Branch
+              <select class="field-control"><option>Oslo Store</option><option>Bergen Store</option></select>
+            </label>
+            <label class="field-label">Original pickup
+              <input class="field-control" value="May 22, 2026" />
+            </label>
+            <label class="field-label">Address
+              <input class="field-control" value="Karl Johans gate 12, Oslo" />
+            </label>
+          </div>
+        </div>
+      ` : activeNewServiceStep === 1 ? `
+        <div class="creation-section">
+          <div class="creation-section-head">
+            <div>
+              <div class="creation-section-title">Item and service</div>
+              <p class="section-sub">Capture item identity, before photos, requested work, and selected service type.</p>
+            </div>
+            <label class="field-label" style="display:flex;align-items:center;gap:8px;flex:0 0 auto;">
+              <input type="checkbox" /> Same service to all items
+            </label>
+          </div>
+
+          <div class="grid grid-2">
+            <label class="field-label">Item name / product
+              <input class="field-control" value="Vintage Cartier Ring" />
+            </label>
+            <label class="field-label">Item type
+              <select class="field-control"><option>Ring</option><option>Watch</option><option>Necklace</option><option>Bracelet</option></select>
+            </label>
+          </div>
+
+          <div class="intake-row" style="margin-top:0;">
+            <div>
+              <div class="field-label">Before photos</div>
+              <div class="photo-requirement">At least one before photo is required before creating a service case.</div>
+            </div>
+            <div class="compact-actions" style="margin-left:auto;">
+              <button class="btn btn-sm">Camera</button>
+              <button class="btn btn-sm">Upload</button>
+            </div>
+          </div>
+
+          <label class="field-label">Service request
+            <textarea class="field-control">Stone tightening and claw inspection.</textarea>
+          </label>
+
+          <div>
+            <div class="field-label">Primary service</div>
+            <div class="pill-row">
+              <button class="service-pill active">Claw tightening</button>
+              <button class="service-pill">Polish</button>
+              <button class="service-pill">Pressure test</button>
+              <button class="service-pill">Restringing</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="field-label">Add-ons</div>
+            <div class="pill-row">
+              <button class="service-pill">Certificate scan</button>
+              <button class="service-pill">Priority workshop</button>
+              <button class="service-pill">Insurance note</button>
+            </div>
+          </div>
+
+          <button class="btn">Add Item</button>
+        </div>
+      ` : `
+        <div class="creation-section">
+          <div class="creation-section-head">
+            <div>
+              <div class="creation-section-title">Workshop and internal notes</div>
+              <p class="section-sub">These instructions stay internal and become the first workshop brief after creation.</p>
+            </div>
+            <span class="route-line">SRV-01943</span>
+          </div>
+
+          <label class="field-label">Workshop instructions
+            <textarea class="field-control">Check setting under magnification. Preserve original finish. Upload after photo before pickup notification.</textarea>
+          </label>
+
+          <label class="field-label">Internal note
+            <textarea class="field-control">Customer prefers SMS. Keep original finish where possible.</textarea>
+          </label>
+
+          <div class="creation-summary-card">
+            <div class="side-info-row"><span>Generated service ID</span><strong>SRV-01943</strong></div>
+            <div class="side-info-row"><span>Customer</span><strong>Amelia Grant</strong></div>
+            <div class="side-info-row"><span>Item</span><strong>Vintage Cartier Ring</strong></div>
+            <div class="side-info-row"><span>Service request</span><strong>Stone tightening and claw inspection</strong></div>
+            <div class="side-info-row"><span>Customer update</span><strong>Create status link after case creation</strong></div>
+          </div>
+        </div>
+      `;
       return `
         <section class="page">
           <div class="new-service-header">
@@ -1868,135 +2644,164 @@
             <span class="route-line">/service/new</span>
           </div>
 
-          <div class="new-service-shell">
-            <div class="intake-layout">
-              <div class="intake-main">
-                <div class="intake-card">
-                  <div class="intake-card-body">
-                    <div class="faint-title">Customer</div>
-                    <div class="intake-row">
-                      <label class="field-label">Phone or email
-                        <input class="field-control" value="+47 412 88 109" />
-                      </label>
-                      <button class="icon-button">→</button>
-                    </div>
-                    <div class="customer-detail-grid" style="margin-top:16px;">
-                      <div><div class="summary-k">Name</div><div class="summary-v">Amelia Grant</div></div>
-                      <div><div class="summary-k">Phone</div><div class="summary-v">+47 412 88 109</div></div>
-                      <div><div class="summary-k">Original pickup</div><div class="summary-v">May 22, 2026</div></div>
-                      <div><div class="summary-k">Branch</div><div class="summary-v">Oslo Store</div></div>
-                      <div class="detail-divider full-row"></div>
-                      <div class="full-row"><div class="summary-k">Address</div><div class="summary-v">Karl Johans gate 12, Oslo</div></div>
-                      <div class="detail-divider full-row"></div>
-                      <div class="note-row full-row">
-                        <label class="field-label">Reschedule pickup<input class="field-control" placeholder="dd/mm/yyyy" /></label>
-                        <button class="btn">Save</button>
-                        <label class="field-label">Note<textarea class="field-control" placeholder="Internal note..."></textarea></label>
-                        <button class="btn">Save Note</button>
-                      </div>
-                    </div>
+          <div class="onboarding-header">
+            <div class="section-head" style="margin-bottom:0;">
+              <div>
+                <div class="eyebrow">Service intake</div>
+                <h1 class="onboarding-title">Create new service case</h1>
+                <p class="page-desc">Step-by-step intake for customer details, item service request, and workshop instructions.</p>
+              </div>
+              <button class="btn btn-primary" onclick="openCreateCaseConfirm()">Review case</button>
+            </div>
+            <div class="onboarding-steps">
+              ${steps.map(([title, copy], index) => `
+                <button class="onboarding-step ${index < activeNewServiceStep ? "done" : ""} ${index === activeNewServiceStep ? "active" : ""}" onclick="setNewServiceStep(${index})">
+                  <span class="onboarding-index">${index + 1}</span>
+                  <span>
+                    <span class="onboarding-step-title">${title}</span>
+                    <span class="onboarding-step-copy">${copy}</span>
+                  </span>
+                </button>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="case-layout">
+            <div class="case-main">
+              <div class="record-panel">
+                <div class="record-toolbar">
+                  <div>
+                    <div class="faint-title" style="margin-bottom:4px;">${stepName}</div>
+                    <div class="section-sub">Step ${activeNewServiceStep + 1} of ${steps.length}</div>
+                  </div>
+                  <div class="record-tools">
+                    <input class="record-search" value="SRV-01943" />
                   </div>
                 </div>
 
-                <div class="intake-card">
-                  <div class="intake-card-body">
-                    <div class="section-head">
-                      <div>
-                        <h2 class="intake-card-title">Item and service</h2>
-                        <p class="section-sub">Capture item identity, before photos, requested work, and workshop-facing instructions.</p>
-                      </div>
-                      <label class="field-label" style="display:flex;align-items:center;gap:8px;flex:0 0 auto;">
-                        <input type="checkbox" /> Same service to all items
-                      </label>
-                    </div>
-
-                    <div class="grid grid-2">
-                      <label class="field-label">Item name / product
-                        <input class="field-control" value="Vintage Cartier Ring" />
-                      </label>
-                      <label class="field-label">Item type
-                        <select class="field-control"><option>Ring</option><option>Watch</option><option>Necklace</option><option>Bracelet</option></select>
-                      </label>
-                    </div>
-
-                    <div class="intake-row">
-                      <div>
-                        <div class="field-label">Before photos</div>
-                        <div class="photo-requirement">At least one before photo is required before creating a service case.</div>
-                      </div>
-                      <div class="compact-actions" style="margin-left:auto;">
-                        <button class="btn btn-sm">▧ Camera</button>
-                        <button class="btn btn-sm">⇧ Upload</button>
-                      </div>
-                    </div>
-
-                    <div class="service-line">
-                      <label class="field-label">Service request
-                        <textarea class="field-control">Stone tightening and claw inspection.</textarea>
-                      </label>
-                      <label class="field-label">Workshop instructions
-                        <textarea class="field-control">Check setting under magnification. Preserve original finish. Upload after photo before pickup notification.</textarea>
-                      </label>
-                      <div>
-                        <div class="field-label">Primary service</div>
-                        <div class="pill-row">
-                          <button class="service-pill active">Claw tightening $1,200</button>
-                          <button class="service-pill">Polish $450</button>
-                          <button class="service-pill">Pressure test $320</button>
-                          <button class="service-pill">Restringing $260</button>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="field-label">Add-ons</div>
-                        <div class="pill-row">
-                          <button class="service-pill">Certificate scan</button>
-                          <button class="service-pill">Priority workshop</button>
-                          <button class="service-pill">Insurance note</button>
-                        </div>
-                      </div>
-                      <button class="btn">＋ Add Item</button>
-                    </div>
+                <div class="creation-form">
+                  ${stepContent}
+                  <div class="step-actions">
+                    <button class="btn" onclick="previousNewServiceStep()" ${activeNewServiceStep === 0 ? "disabled" : ""}>Back</button>
+                    <button class="btn btn-primary" onclick="nextNewServiceStep()">${activeNewServiceStep === 2 ? "Review and Create" : "Next"}</button>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="intake-side">
-                <div class="intake-card">
-                  <div class="intake-card-body side-stack">
-                    <h2 class="intake-card-title">Details</h2>
-                    <label class="field-label">Generated service ID
-                      <div class="generated-box"><span>SRV-01943</span><span>Auto-created</span></div>
-                    </label>
-                    <label class="field-label">Initial status
-                      <select class="field-control"><option>Service received</option><option>Pending approval</option></select>
-                    </label>
-                    <label class="field-label">Estimated completion
-                      <input class="field-control" value="May 22, 2026" />
-                    </label>
-                    <label class="field-label">Internal note
-                      <textarea class="field-control">Customer prefers SMS. Keep original finish where possible.</textarea>
-                    </label>
-                  </div>
+            <div class="case-side">
+              <div class="detail-section">
+                <div class="faint-title">Generated Record</div>
+                <div class="creation-summary-card">
+                  <div class="side-info-row"><span>Service ID</span><strong>SRV-01943</strong></div>
+                  <div class="side-info-row"><span>Status</span><strong>Service received</strong></div>
+                  <div class="side-info-row"><span>Completion target</span><strong>May 22, 2026</strong></div>
+                  <div class="side-info-row"><span>Approval link</span><strong>Ready after create</strong></div>
                 </div>
+              </div>
 
-                <div class="intake-card">
-                  <div class="intake-card-body">
-                    <h2 class="intake-card-title">Summary</h2>
-                    <div class="receipt-strip">
-                      <div class="receipt-chip"><span>Customer</span><strong>Amelia Grant</strong></div>
-                      <div class="receipt-chip"><span>Items</span><strong>1</strong></div>
-                      <div class="receipt-chip"><span>Receipt copies</span><strong>4</strong></div>
-                      <div class="receipt-chip"><span>Status link</span><strong>Ready</strong></div>
-                    </div>
-                    <div class="summary-total"><span>Total estimate</span><span>$1,200</span></div>
-                    <button class="btn btn-primary full-width-btn">Create Case + Send Link</button>
-                  </div>
+              <div class="detail-section">
+                <div class="faint-title">Customer Info</div>
+                <div class="side-info-list">
+                  <div class="side-info-row"><span>Name</span><strong>Amelia Grant</strong></div>
+                  <div class="side-info-row"><span>Phone</span><strong>+47 412 88 109</strong></div>
+                  <div class="side-info-row"><span>Branch</span><strong>Oslo Store</strong></div>
+                  <div class="side-info-row"><span>Address</span><strong>Karl Johans gate 12, Oslo</strong></div>
                 </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="faint-title">Workflow Plan</div>
+                <div class="side-info-list">
+                  <div class="side-info-row"><span>Create case</span><strong>Required</strong></div>
+                  <div class="side-info-row"><span>Send status link</span><strong>SMS + email</strong></div>
+                  <div class="side-info-row"><span>Workshop state</span><strong>Waiting for approval</strong></div>
+                  <div class="side-info-row"><span>Pickup flow</span><strong>After closeout</strong></div>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="faint-title">Create Summary</div>
+                <div class="receipt-strip">
+                  <div class="receipt-chip"><span>Customer</span><strong>Amelia Grant</strong></div>
+                  <div class="receipt-chip"><span>Items</span><strong>1</strong></div>
+                  <div class="receipt-chip"><span>Required photo</span><strong>Missing</strong></div>
+                  <div class="receipt-chip"><span>Status link</span><strong>Ready</strong></div>
+                </div>
+                <div class="summary-total"><span>Workflow state</span><span>Ready to review</span></div>
+                <button class="btn btn-primary full-width-btn" onclick="openCreateCaseConfirm()">Review and Create</button>
               </div>
             </div>
           </div>
         </section>
       `;
+    }
+
+    function openCreateCaseConfirm() {
+      closeCreateCaseConfirm();
+      document.body.insertAdjacentHTML("beforeend", `
+        <div class="modal-backdrop show" id="createCaseConfirm" onclick="closeCreateCaseConfirm(event)">
+          <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+              <div>
+                <h2 class="modal-title">Create service case?</h2>
+                <p class="section-sub">Review the record before it appears on the service board and customer link flow.</p>
+              </div>
+              <button class="btn btn-sm" onclick="closeCreateCaseConfirm()">Close</button>
+            </div>
+            <div class="modal-body">
+              <div class="confirm-summary">
+                <div class="confirm-row"><span>Service ID</span><strong>SRV-01943</strong></div>
+                <div class="confirm-row"><span>Customer</span><strong>Amelia Grant</strong></div>
+                <div class="confirm-row"><span>Item</span><strong>Vintage Cartier Ring</strong></div>
+                <div class="confirm-row"><span>Service request</span><strong>Stone tightening and claw inspection</strong></div>
+                <div class="confirm-row"><span>Initial status</span><strong>Service Received</strong></div>
+                <div class="confirm-row"><span>Completion target</span><strong>May 22, 2026</strong></div>
+                <div class="confirm-row"><span>Customer update</span><strong>Create status link, then send SMS + email</strong></div>
+                <div class="confirm-row"><span>Workshop note</span><strong>Preserve original finish. Upload after photo before pickup notification.</strong></div>
+              </div>
+              <p class="section-sub">The case will start in Service Received. Staff can send the approval link from the service record after required before photos are attached.</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" onclick="closeCreateCaseConfirm()">Keep Editing</button>
+              <button class="btn btn-primary" onclick="confirmCreateServiceCase()">Create Service Case</button>
+            </div>
+          </div>
+        </div>
+      `);
+    }
+
+    function closeCreateCaseConfirm(event) {
+      if (event && event.target.id !== "createCaseConfirm") return;
+      const modal = document.getElementById("createCaseConfirm");
+      if (modal) modal.remove();
+    }
+
+    function confirmCreateServiceCase() {
+      const existingIndex = serviceCases.findIndex(row => row.id === "SRV-01943");
+      if (existingIndex === -1) {
+        serviceCases.unshift({
+          id: "SRV-01943",
+          customer: "Amelia Grant",
+          contact: "+47 412 88 109 / amelia@email.com",
+          item: "Vintage Cartier Ring",
+          description: "Stone tightening and claw inspection",
+          status: "Service Received",
+          due: "May 22, 2026",
+          estimate: "Scope pending",
+          updated: "Just now",
+          priority: "High",
+          assigned: "Unassigned",
+        });
+        activeServiceIndex = 0;
+      } else {
+        activeServiceIndex = existingIndex;
+      }
+      closeCreateCaseConfirm();
+      active = "service-detail";
+      renderNav();
+      renderPage();
+      window.location.hash = `/service/${serviceCases[activeServiceIndex].id}`;
     }
 
     function renderServiceDetail() {
@@ -2011,89 +2816,243 @@
             <span class="route-line">/service/${row.id}</span>
           </div>
 
+          ${renderServiceHero(row)}
           ${renderServiceDetailBody(row)}
         </section>
       `;
     }
 
+    function renderServiceHero(row) {
+      const stages = ["Service Received", "Pending Approval", "In progress", "Ready for Pickup", "Completed", "Overdue"];
+      const activeIndex = stages.findIndex(stage => stage.toLowerCase() === row.status.toLowerCase());
+      const firstLetter = row.customer.slice(0, 1).toUpperCase();
+      return `
+        <div class="service-hero">
+          <div class="service-hero-main">
+            <div class="service-avatar">${firstLetter}</div>
+            <div>
+              <div class="kanban-card-brand">SDE.NO</div>
+              <h2 class="service-hero-title">${row.id} · ${row.item}</h2>
+              <div class="service-hero-sub">${row.customer} · Jewellery retail and workshop service</div>
+            </div>
+            <div class="service-hero-side">
+              ${status(row.status)}
+              <button class="btn btn-primary">Advance ›</button>
+            </div>
+          </div>
+          <div class="service-stage">
+            ${stages.map((stage, index) => `
+              <div class="stage-step ${index < activeIndex ? "done" : ""} ${index === activeIndex ? "active" : ""}">
+                <div>${stage}</div>
+                <div class="stage-line"></div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
     function renderServiceDetailBody(row) {
       const phone = row.contact.split(" / ")[0] || row.contact;
+      const email = row.contact.split(" / ")[1] || "customer@email.com";
+      const serviceTabs = [
+        ["activity", "Activity"],
+        ["workshop", "Workshop"],
+        ["photos", "Photos"],
+        ["pickup", "Pickup"],
+        ["thread", "Thread"],
+      ];
+      const tabContent = activeServiceTab === "activity" ? `
+        <div class="activity-feed">
+          ${caseEvents.map(([type, title, time, desc]) => `
+            <div class="activity-item">
+              <div class="activity-icon">${type.slice(0, 1)}</div>
+              <div>
+                <div class="activity-title">${title}</div>
+                <div class="activity-copy">${desc}</div>
+                <div class="activity-meta"><span>${type}</span><span>${time}</span></div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      ` : activeServiceTab === "photos" ? `
+        <div class="creation-form">
+          <div class="creation-section">
+            <div class="creation-section-head">
+              <div>
+                <div class="creation-section-title">Photos and item evidence</div>
+                <p class="section-sub">Before photos, stone details, hallmarks, and after-service evidence stay attached to this service ID.</p>
+              </div>
+              <button class="btn btn-sm">Upload Photo</button>
+            </div>
+            ${renderAttachments()}
+          </div>
+        </div>
+      ` : activeServiceTab === "pickup" ? `
+        <div class="creation-form">
+          <div class="creation-section">
+            <div class="creation-section-head">
+              <div>
+                <div class="creation-section-title">Pickup handoff</div>
+                <p class="section-sub">Pickup date stays visible to staff. Customer notification should go out after final workshop closeout.</p>
+              </div>
+              ${status(row.status)}
+            </div>
+            <div class="side-info-list">
+              <div class="side-info-row"><span>Original pickup</span><strong>${row.due}</strong></div>
+              <div class="side-info-row"><span>Branch</span><strong>Oslo Store</strong></div>
+              <div class="side-info-row"><span>Customer notification</span><strong>Ready after closeout</strong></div>
+              <div class="side-info-row"><span>Receipt</span><strong>Digital copy prepared</strong></div>
+            </div>
+            <div class="grid grid-2">
+              <label class="field-label">Reschedule pickup<input class="field-control" placeholder="dd/mm/yyyy" /></label>
+              <button class="btn" style="align-self:end;">Save Pickup Date</button>
+            </div>
+          </div>
+        </div>
+      ` : activeServiceTab === "thread" ? `
+        <div class="note-composer">
+          <div class="composer-placeholder">Write a message about the item, approval question, or pickup timing...</div>
+          <div class="composer-actions">
+            <div class="composer-actions-left">
+              <select class="field-control" style="height:34px; width:132px;">
+                <option>Customer visible</option>
+                <option>Internal only</option>
+              </select>
+              <select class="field-control" style="height:34px; width:112px;">
+                <option>SMS</option>
+                <option>Email</option>
+                <option>Portal</option>
+              </select>
+            </div>
+            <button class="btn btn-primary btn-sm">Send Message</button>
+          </div>
+        </div>
+        <div class="activity-feed">
+          <div class="activity-item">
+            <div class="activity-icon">S</div>
+            <div>
+              <div class="activity-title">SDE service desk</div>
+              <div class="activity-copy">Hi ${row.customer.split(" ")[0]}, we inspected the item. Please confirm the service scope so the workshop can proceed.</div>
+              <div class="activity-meta"><span>Portal</span><span>Today</span><span>Customer visible</span></div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">C</div>
+            <div>
+              <div class="activity-title">${row.customer}</div>
+              <div class="activity-copy">Please proceed. Can you also keep the original finish as much as possible?</div>
+              <div class="activity-meta"><span>Customer reply</span><span>${email}</span></div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon">S</div>
+            <div>
+              <div class="activity-title">SDE service desk</div>
+              <div class="activity-copy">Yes. Workshop note updated. We will send a pickup message once the item passes final inspection.</div>
+              <div class="activity-meta"><span>Portal</span><span>Today</span></div>
+            </div>
+          </div>
+        </div>
+      ` : `
+        <div class="creation-form">
+          <div class="creation-section">
+            <div class="creation-section-head">
+              <div>
+                <div class="creation-section-title">Workshop brief</div>
+                <p class="section-sub">Job-level instructions for workshop staff and service execution.</p>
+              </div>
+              <button class="btn btn-sm">Add Internal Note</button>
+            </div>
+            <div class="summary-grid">
+              <div class="summary-item"><div class="summary-k">Work required</div><div class="summary-v">${row.description}</div></div>
+              <div class="summary-item"><div class="summary-k">Handling note</div><div class="summary-v">Preserve patina and original finish where possible.</div></div>
+              <div class="summary-item"><div class="summary-k">Priority</div><div class="summary-v">${row.priority}</div></div>
+            </div>
+          </div>
+        </div>
+      `;
       return `
         <div class="case-layout">
           <div class="case-main">
-            <div class="case-summary">
-              <div class="faint-title">Customer</div>
-              <div class="customer-detail-grid">
-                <div><div class="summary-k">Name</div><div class="summary-v">${row.customer}</div></div>
-                <div><div class="summary-k">Phone</div><div class="summary-v">${phone}</div></div>
-                <div><div class="summary-k">Original pickup</div><div class="summary-v">${row.due}</div></div>
-                <div><div class="summary-k">Branch</div><div class="summary-v">Oslo Store</div></div>
-                <div class="detail-divider full-row"></div>
-                <div class="full-row"><div class="summary-k">Address</div><div class="summary-v">Karl Johans gate 12, Oslo</div></div>
-                <div class="detail-divider full-row"></div>
-                <div class="note-row full-row">
-                  <label class="field-label">Reschedule pickup<input class="field-control" placeholder="dd/mm/yyyy" /></label>
-                  <button class="btn">Save</button>
-                  <label class="field-label">Note<textarea class="field-control" placeholder="Internal note..."></textarea></label>
-                  <button class="btn">Save Note</button>
+            <div class="record-panel">
+              <div class="record-toolbar">
+                <div class="record-tabs">
+                  ${serviceTabs.map(([key, label]) => `
+                    <button class="record-tab ${activeServiceTab === key ? "active" : ""}" onclick="setServiceTab('${key}')">
+                      ${label}${key === "thread" ? ` <span class="record-count">3</span>` : ""}
+                    </button>
+                  `).join("")}
+                </div>
+                <div class="record-tools">
+                  <input class="record-search" placeholder="Search ${activeServiceTab}" />
+                  <select class="field-control" style="height:34px; width:132px;">
+                    <option>All types</option>
+                    <option>Customer</option>
+                    <option>Workshop</option>
+                    <option>Approval</option>
+                  </select>
                 </div>
               </div>
-            </div>
 
-            <div class="detail-section">
-              <div class="faint-title">Workshop brief</div>
-              <div class="summary-grid">
-                <div class="summary-item"><div class="summary-k">Work required</div><div class="summary-v">${row.description}</div></div>
-                <div class="summary-item"><div class="summary-k">Handling note</div><div class="summary-v">Preserve patina and original finish where possible.</div></div>
-                <div class="summary-item"><div class="summary-k">Priority</div><div class="summary-v">${row.priority}</div></div>
-              </div>
-            </div>
-
-            <div class="detail-section">
-              <div class="faint-title">Photos and item evidence</div>
-              ${renderAttachments()}
+              ${tabContent}
             </div>
           </div>
 
           <div class="case-side">
             <div class="detail-section">
-              <div class="eyebrow">Payment Summary</div>
-              <div class="payment-row"><span>Total</span><strong>${row.estimate === "TBD" ? "$0.00" : row.estimate}</strong></div>
-              <div class="payment-row"><a class="muted" href="#">Add promo</a><span></span></div>
-              <div class="payment-row"><span>Paid</span><strong class="paid-text">$200</strong></div>
-              <div class="summary-total"><span>Balance</span><span class="balance-pill">Partial · ${row.estimate === "TBD" ? "$0" : "$1,000"}</span></div>
-              <button class="btn btn-primary full-width-btn">＋ Add Payment</button>
+              <div class="faint-title">Customer Info</div>
+              <div class="side-info-list">
+                <div class="side-info-row"><span>Name</span><strong>${row.customer}</strong></div>
+                <div class="side-info-row"><span>Phone</span><strong>${phone}</strong></div>
+                <div class="side-info-row"><span>Email</span><strong>${email}</strong></div>
+                <div class="side-info-row"><span>Branch</span><strong>Oslo Store</strong></div>
+                <div class="side-info-row"><span>Address</span><strong>Karl Johans gate 12, Oslo</strong></div>
+                <div class="side-info-row"><span>Original pickup</span><strong>${row.due}</strong></div>
+              </div>
             </div>
 
             <div class="detail-section">
+              <div class="faint-title">Workflow Status</div>
+              <div class="side-info-list">
+                <div class="side-info-row"><span>Current state</span><strong>${row.status}</strong></div>
+                <div class="side-info-row"><span>Customer approval</span><strong>${row.estimate}</strong></div>
+                <div class="side-info-row"><span>Last update</span><strong>${row.updated}</strong></div>
+                <div class="side-info-row"><span>Next action</span><strong>Workshop follow-up</strong></div>
+              </div>
+              <button class="btn btn-primary full-width-btn">Update Status</button>
+            </div>
+
+            <div class="detail-section">
+              <div class="faint-title">Assigned To</div>
+              <div class="person-row">
+                <div class="person-avatar">${row.assigned === "Unassigned" ? "U" : row.assigned.slice(0, 1).toUpperCase()}</div>
+                <div>
+                  <div class="person-name">${row.assigned === "Unassigned" ? "Unassigned" : row.assigned}</div>
+                  <div class="person-role">Workshop owner</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="faint-title">Customer Updates</div>
               <div class="segmented">
                 <button class="segment active">SMS</button>
-                <button class="segment">Payment</button>
+                <button class="segment">Email</button>
               </div>
-              <p class="section-sub">Ready-for-pickup SMS has not been sent yet.</p>
-              <button class="btn full-width-btn">Send SMS · Ready for Pickup</button>
-            </div>
-
-            <div class="detail-section">
-              <div class="eyebrow">Assigned To</div>
-              <select class="field-control">
-                <option>${row.assigned === "Unassigned" ? "Unassigned" : row.assigned}</option>
-                <option>Jonas</option>
-                <option>Nora</option>
-                <option>Mikael</option>
-              </select>
-            </div>
-
-            <div class="detail-section">
-              <div class="eyebrow">Email Customer</div>
-              <p class="section-sub">${row.contact.split(" / ")[1] || "customer@email.com"}</p>
+              <p class="section-sub">Send service-linked updates from this record so approval questions and pickup timing stay attached to the case.</p>
               <select class="field-control">
                 <option>Service Ready for Pickup</option>
-                <option>Payment Reminder</option>
                 <option>Updated Pickup Date</option>
-                <option>Estimate Approval Request</option>
+                <option>Work Scope Approval Request</option>
               </select>
-              <button class="btn full-width-btn">✉ Send Email</button>
+              <button class="btn full-width-btn">Send Customer Update</button>
+            </div>
+
+            <div class="detail-section">
+              <div class="faint-title">Reschedule Pickup</div>
+              <label class="field-label">New pickup date<input class="field-control" placeholder="dd/mm/yyyy" /></label>
+              <button class="btn full-width-btn">Save Pickup Date</button>
             </div>
 
           </div>
@@ -2118,13 +3077,123 @@
     }
 
     function renderWorkshop() {
-      return tablePage(
-        "Service Operations",
-        "Workshop queue",
-        "Role-specific work queue replacing the workshop copy of the paper service receipt.",
-        ["Service ID", "Item", "Work Required", "Customer", "Status", "Due Date", "Priority", "Assigned To", "Actions"],
-        serviceCases.map(x => [x.id, x.item, x.description, x.customer, status(x.status), x.due, status(x.priority), x.assigned, "Update"])
-      );
+      return `
+        <section class="page">
+          ${pageHeader("Service Operations", "Workshop queue", "Role-specific work queue replacing the workshop copy of the paper service receipt.")}
+          <div class="card table-scroll">
+            <table>
+              <thead><tr><th>Service ID</th><th>Item</th><th>Work Required</th><th>Status</th><th>Due Date</th><th>Priority</th><th>Assigned To</th><th>Last Update</th><th>Action</th></tr></thead>
+              <tbody>
+                ${serviceCases.map((x, index) => `
+                  <tr class="clickable-row" onclick="navigateWorkshopDetail(${index})">
+                    <td class="primary">${x.id}</td>
+                    <td>${x.item}</td>
+                    <td class="truncate">${x.description}</td>
+                    <td>${status(x.status)}</td>
+                    <td>${x.due}</td>
+                    <td>${status(x.priority)}</td>
+                    <td>${x.assigned}</td>
+                    <td>${x.updated}</td>
+                    <td><button class="btn btn-sm">View</button></td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderWorkshopDetail() {
+      const row = serviceCases[activeServiceIndex] || serviceCases[0];
+      return `
+        <section class="page">
+          <div class="new-service-header" style="margin-bottom:18px;">
+            <button class="back-link" onclick="navigate('workshop')">
+              <span class="back-mark">←</span>
+              <span>Workshop queue</span>
+            </button>
+            <span class="route-line">/workshop/${row.id}</span>
+          </div>
+
+          ${pageHeader("Service Operations", "Workshop job detail", "Job-level workspace for item evidence, workshop instructions, progress updates, and pickup handoff.")}
+
+          <div class="case-layout">
+            <div class="case-main">
+              <div class="case-summary">
+                <div class="faint-title">Case summary</div>
+                <div class="summary-grid">
+                  <div class="summary-item"><div class="summary-k">Service ID</div><div class="summary-v">${row.id}</div></div>
+                  <div class="summary-item"><div class="summary-k">Item</div><div class="summary-v">${row.item}</div></div>
+                  <div class="summary-item"><div class="summary-k">Customer</div><div class="summary-v">${row.customer}</div></div>
+                  <div class="summary-item"><div class="summary-k">Status</div><div class="summary-v">${row.status}</div></div>
+                  <div class="summary-item"><div class="summary-k">Due date</div><div class="summary-v">${row.due}</div></div>
+                  <div class="summary-item"><div class="summary-k">Assigned to</div><div class="summary-v">${row.assigned}</div></div>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="faint-title">Workshop brief</div>
+                <div class="summary-grid">
+                  <div class="summary-item"><div class="summary-k">Work required</div><div class="summary-v">${row.description}</div></div>
+                  <div class="summary-item"><div class="summary-k">Handling note</div><div class="summary-v">Preserve patina and original finish where possible.</div></div>
+                  <div class="summary-item"><div class="summary-k">Warranty / guarantee</div><div class="summary-v">Standard repair warranty applies after pickup.</div></div>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="section-head">
+                  <div>
+                    <div class="faint-title">Item evidence</div>
+                    <p class="section-sub">Before photos, item markings, and workshop-only evidence stay tied to the service ID.</p>
+                  </div>
+                  <button class="btn btn-sm">Upload Photo</button>
+                </div>
+                ${renderAttachments()}
+              </div>
+
+              <div class="detail-section">
+                <div class="faint-title">Internal notes and activity</div>
+                <div class="list">
+                  ${caseEvents.map(([type, title, time, desc]) => `
+                    <div class="list-row">
+                      <div>
+                        <div class="list-title">${type} · ${title}</div>
+                        <div class="list-sub">${desc}</div>
+                      </div>
+                      <div class="list-sub">${time}</div>
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+            </div>
+
+            <div class="case-side">
+              <div class="detail-section">
+                <div class="eyebrow">Work Progress</div>
+                <div class="side-stack">
+                  <button class="btn full-width-btn">Start Work</button>
+                  <button class="btn full-width-btn">Add Internal Note</button>
+                  <button class="btn full-width-btn">Mark Inspection Needed</button>
+                  <button class="btn btn-primary full-width-btn">Mark Ready for Pickup</button>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="eyebrow">After-Service Evidence</div>
+                <p class="section-sub">Upload after photos and final inspection notes before customer pickup notification.</p>
+                <button class="btn full-width-btn">Upload After Photo</button>
+              </div>
+
+              <div class="detail-section">
+                <div class="eyebrow">Pickup Handoff</div>
+                <p class="section-sub">Ready-for-pickup SMS and email should be sent only after final workshop closeout.</p>
+                <button class="btn full-width-btn">Send Pickup Notification</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
     }
 
     function renderPickupCalendar() {
@@ -2176,7 +3245,7 @@
           <button class="btn btn-ghost" onclick="closePickupDay()">✕</button>
         </div>
         <div class="list">
-          ${cases.map(([index, itemCount, state, payment]) => {
+          ${cases.map(([index, itemCount, state, workflowNote]) => {
             const row = serviceCases[index] || serviceCases[0];
             return `
               <div class="list-row" onclick="navigateServiceDetail(${index})" style="cursor:pointer;">
@@ -2186,7 +3255,7 @@
                 </div>
                 <div style="text-align:right;">
                   ${status(state)}
-                  <div class="list-sub">${payment}</div>
+                  <div class="list-sub">${workflowNote}</div>
                 </div>
               </div>
             `;
@@ -2206,36 +3275,112 @@
       const states = ["Sent", "Pending", "Approved", "Draft"];
       return `
         <section class="page">
-          ${pageHeader("Service Operations", "Customer approvals", "Approval requests, resend controls, customer responses, and approval state before workshop proceeds.")}
-          <div class="grid grid-3">
-            <div class="approval-panel">
-              <div class="eyebrow">Portal Approval</div>
-              <div class="info-value">SRV-01942 · ${serviceCases[0].estimate}</div>
-              <p class="section-sub">Customer can approve, decline, or ask a question from the status link.</p>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-primary">Approve</button><button class="btn">Decline</button><button class="btn">Ask Question</button></div>
-            </div>
-            <div class="info-box">
-              <div class="info-label">Approval before workshop</div>
-              <div class="info-value">Required for estimate changes</div>
-              <p class="section-sub">Approval event is stored on the service case and visible in activity history.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-label">Resend controls</div>
-              <div class="info-value">SMS + email templates</div>
-              <p class="section-sub">Staff can resend the same status link without creating a duplicate thread.</p>
-            </div>
-          </div>
-          <div class="card table-scroll mt-5">
+          ${pageHeader("Service Operations", "Approval queue", "Work scope approvals, customer questions, and resend actions before workshop proceeds.")}
+          <div class="card table-scroll">
             <table>
-              <thead><tr><th>Service ID</th><th>Customer</th><th>Item</th><th>Work Description</th><th>Estimate</th><th>Approval Status</th><th>Sent Date</th><th>Last Response</th><th>Actions</th></tr></thead>
+              <thead><tr><th>Service ID</th><th>Customer</th><th>Item</th><th>Scope State</th><th>Approval Status</th><th>Sent Date</th><th>Last Response</th><th>Channel</th><th>Action</th></tr></thead>
               <tbody>
                 ${serviceCases.slice(0, 4).map((x, i) => `
-                  <tr>
-                    <td class="primary">${x.id}</td><td>${x.customer}</td><td>${x.item}</td><td class="truncate">${x.description}</td><td class="primary">${x.estimate}</td><td>${status(states[i])}</td><td>${i === 3 ? "Not sent" : "May 20"}</td><td>${i === 2 ? "Approved by SMS" : i === 0 ? "Customer asked one question" : "No response"}</td><td>Open Thread</td>
+                  <tr class="clickable-row" onclick="navigateApprovalDetail(${i})">
+                    <td class="primary">${x.id}</td>
+                    <td>${x.customer}</td>
+                    <td>${x.item}</td>
+                    <td class="primary">${x.estimate}</td>
+                    <td>${status(states[i])}</td>
+                    <td>${i === 3 ? "Not sent" : "May 20"}</td>
+                    <td>${i === 2 ? "Approved by SMS" : i === 0 ? "Customer asked one question" : "No response"}</td>
+                    <td>${i % 2 ? "Email" : "SMS + email"}</td>
+                    <td><button class="btn btn-sm">Review</button></td>
                   </tr>
                 `).join("")}
               </tbody>
             </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderApprovalDetail() {
+      const row = serviceCases[activeServiceIndex] || serviceCases[0];
+      return `
+        <section class="page">
+          <div class="new-service-header" style="margin-bottom:18px;">
+            <button class="back-link" onclick="navigate('approvals')">
+              <span class="back-mark">←</span>
+              <span>Approval queue</span>
+            </button>
+            <span class="route-line">/approvals/${row.id}</span>
+          </div>
+
+          ${pageHeader("Service Operations", "Approval detail", "Review the work scope, customer question, decision history, and next staff action before workshop proceeds.")}
+
+          <div class="case-layout">
+            <div class="case-main">
+              <div class="case-summary">
+                <div class="faint-title">Approval summary</div>
+                <div class="summary-grid">
+                  <div class="summary-item"><div class="summary-k">Service ID</div><div class="summary-v">${row.id}</div></div>
+                  <div class="summary-item"><div class="summary-k">Customer</div><div class="summary-v">${row.customer}</div></div>
+                  <div class="summary-item"><div class="summary-k">Item</div><div class="summary-v">${row.item}</div></div>
+                  <div class="summary-item"><div class="summary-k">Scope state</div><div class="summary-v">${row.estimate}</div></div>
+                  <div class="summary-item"><div class="summary-k">Approval status</div><div class="summary-v">Customer question received</div></div>
+                  <div class="summary-item"><div class="summary-k">Sent via</div><div class="summary-v">SMS + email</div></div>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="faint-title">Work scope being approved</div>
+                <div class="summary-grid">
+                  <div class="summary-item"><div class="summary-k">Work required</div><div class="summary-v">${row.description}</div></div>
+                  <div class="summary-item"><div class="summary-k">Expected completion</div><div class="summary-v">${row.due}</div></div>
+                  <div class="summary-item"><div class="summary-k">Customer authorization</div><div class="summary-v">Approval allows workshop to proceed.</div></div>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="section-head">
+                  <div>
+                    <div class="faint-title">Customer-visible photos</div>
+                    <p class="section-sub">Photos included with the approval link so the customer understands the requested service work.</p>
+                  </div>
+                  <button class="btn btn-sm">Manage Visibility</button>
+                </div>
+                ${renderAttachments()}
+              </div>
+
+              <div class="detail-section">
+                <div class="faint-title">Message thread</div>
+                ${renderChatThread()}
+              </div>
+
+              <div class="detail-section">
+                <div class="faint-title">Decision history</div>
+                <div class="timeline">
+                  <div class="timeline-item done"><div class="timeline-dot"></div><div><div class="timeline-title">Approval link sent</div><div class="timeline-meta">May 20, 09:32 · SMS + email</div></div></div>
+                  <div class="timeline-item done"><div class="timeline-dot"></div><div><div class="timeline-title">Customer opened portal</div><div class="timeline-meta">May 20, 09:41 · Status link</div></div></div>
+                  <div class="timeline-item done"><div class="timeline-dot"></div><div><div class="timeline-title">Customer asked a question</div><div class="timeline-meta">May 20, 09:58 · Portal thread</div></div></div>
+                  <div class="timeline-item"><div class="timeline-dot"></div><div><div class="timeline-title">Final approval pending</div><div class="timeline-meta">Next · Staff reply needed</div></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="case-side">
+              <div class="detail-section">
+                <div class="eyebrow">Staff Actions</div>
+                <div class="side-stack">
+                  <button class="btn btn-primary full-width-btn">Reply to Customer</button>
+                  <button class="btn full-width-btn">Resend Approval Link</button>
+                  <button class="btn full-width-btn">Revise Work Scope</button>
+                  <button class="btn full-width-btn">Mark Approved Manually</button>
+                  <button class="btn full-width-btn">Mark Declined</button>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="eyebrow">Approval Rule</div>
+                <p class="section-sub">Workshop should not proceed on scope-changing work until the customer approves the current version.</p>
+              </div>
+            </div>
           </div>
         </section>
       `;
@@ -2315,11 +3460,11 @@
                 <div class="section-head" style="margin-bottom:0;">
                   <div>
                     <div class="eyebrow">Next Step</div>
-                    <div class="info-value">${row.estimate} estimate ready for approval</div>
+                    <div class="info-value">${row.estimate} for approval</div>
                     <p class="section-sub">Stone tightening and claw inspection. Approval lets the workshop continue without another phone call.</p>
                   </div>
                   <div class="compact-actions">
-                    <button class="btn btn-primary">Approve Estimate</button>
+                    <button class="btn btn-primary">Approve Work Scope</button>
                     <button class="btn">Ask Question</button>
                   </div>
                 </div>
@@ -2393,7 +3538,7 @@
     }
 
     function renderReceipts() {
-      const lines = ["Service ID", "Customer Details", "Item Description", "Service Request", "Workshop Message", "Warranty / Guarantee", "Price Estimate", "QR / Status Link", "Terms / Signature"];
+      const lines = ["Service ID", "Customer Details", "Item Description", "Service Request", "Workshop Message", "Warranty / Guarantee", "Approval Scope", "QR / Status Link", "Terms / Signature"];
       return `
         <section class="page">
           ${pageHeader("Documents", "Receipt preview", "Printable service receipt mapped to store, customer, workshop, and internal copies.")}
@@ -2419,11 +3564,11 @@
         ["Cases by Status", "42 active cases"], ["Overdue Cases", "4 require action"],
         ["Pending Approval", "9 waiting customer"], ["Ready for Pickup", "11 notified"],
         ["Avg. Turnaround", "6.4 days"], ["Workshop Load", "78% capacity"],
-        ["Completed Cases", "64 this month"], ["Estimated Revenue", "$38,420"]
+        ["Completed Cases", "64 this month"], ["Avg. Status Movement", "2.3 days"]
       ];
       return `
         <section class="page">
-          ${pageHeader("Insights", "Reports", "Operational reporting for management visibility across cases, approvals, workshop load, turnaround, and revenue.")}
+          ${pageHeader("Insights", "Reports", "Operational reporting for management visibility across cases, approvals, workshop load, turnaround, and pickup readiness.")}
           <div class="grid grid-4">
             ${cards.map(([a,b]) => metric("▥", a, b, "Service POC metric")).join("")}
           </div>
@@ -2461,13 +3606,13 @@
       return tablePage(
         "Admin",
         "Services",
-        "Global service catalog used during intake, estimates, approvals, receipts, and workshop instructions.",
-        ["Service", "Category", "Default Price", "Approval Required", "Status"],
+        "Global service catalog used during intake, approvals, receipts, and workshop instructions.",
+        ["Service", "Category", "Default Scope", "Approval Required", "Status"],
         [
-          ["Claw tightening", "Jewelry repair", "$1,200", "Yes", status("Approved")],
-          ["Watch polish", "Watch service", "$450", "No", status("Approved")],
-          ["Pressure test", "Watch service", "$320", "No", status("Approved")],
-          ["Pearl restringing", "Jewelry repair", "$260", "No", status("Draft")],
+          ["Claw tightening", "Jewelry repair", "Inspection + tightening", "Yes", status("Approved")],
+          ["Watch polish", "Watch service", "Polish + inspection", "No", status("Approved")],
+          ["Pressure test", "Watch service", "Pressure test report", "No", status("Approved")],
+          ["Pearl restringing", "Jewelry repair", "Restring + clasp check", "No", status("Draft")],
         ]
       );
     }
@@ -2479,10 +3624,11 @@
         "service-new": renderNewService,
         "service-detail": renderServiceDetail,
         workshop: renderWorkshop,
+        "workshop-detail": renderWorkshopDetail,
         pickups: renderPickupCalendar,
         approvals: renderApprovals,
+        "approval-detail": renderApprovalDetail,
         customers: renderCustomers,
-        messages: renderMessages,
         portal: renderPortal,
         receipts: renderReceipts,
         reports: renderReports,
@@ -2501,6 +3647,20 @@
       if (matchedIndex >= 0) {
         activeServiceIndex = matchedIndex;
         active = "service-detail";
+      }
+    } else if (window.location.hash.startsWith("#/workshop/")) {
+      const serviceId = window.location.hash.replace("#/workshop/", "");
+      const matchedIndex = serviceCases.findIndex(row => row.id === serviceId);
+      if (matchedIndex >= 0) {
+        activeServiceIndex = matchedIndex;
+        active = "workshop-detail";
+      }
+    } else if (window.location.hash.startsWith("#/approvals/")) {
+      const serviceId = window.location.hash.replace("#/approvals/", "");
+      const matchedIndex = serviceCases.findIndex(row => row.id === serviceId);
+      if (matchedIndex >= 0) {
+        activeServiceIndex = matchedIndex;
+        active = "approval-detail";
       }
     }
 
